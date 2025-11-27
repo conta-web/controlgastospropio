@@ -1,573 +1,563 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Control Financiero SV — Dark Neon Red</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Control Financiero SV - Plazos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563EB;
+            --primary-dark: #1E40AF;
+            --bg: #F8FAFC;
+            --card: #FFFFFF;
+            --text: #0F172A;
+            --text-light: #64748B;
+            --danger: #EF4444;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --radius: 16px;
+        }
 
-<!-- Fuente moderna -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: var(--text); padding-bottom: 90px; }
+        
+        .container { max-width: 600px; margin: 0 auto; min-height: 100vh; position: relative; }
 
-<style>
-/* =============================== */
-/*      🎇 ESTILO NEON ROJO        */
-/* =============================== */
-:root {
-    --bg: #0a0a0a;
-    --card: #131313;
-    --text: #e5e5e5;
-    --text-soft: #8b8b8b;
-    --neon: #ff1a3c;
-    --neon-soft: #ff3955;
-    --round: 18px;
-    --shadow-neon: 0 0 12px rgba(255, 36, 73, 0.45);
-}
+        /* HEADER & DASHBOARD */
+        header { padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { font-size: 1.4rem; font-weight: 800; }
+        
+        .hero-card {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white; padding: 25px; margin: 0 20px 20px; border-radius: 24px;
+            box-shadow: 0 10px 20px -5px rgba(37, 99, 235, 0.4);
+        }
+        .hero-label { font-size: 0.85rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+        .hero-amount { font-size: 2.8rem; font-weight: 800; margin: 5px 0; }
+        
+        .info-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+            background: rgba(255,255,255,0.1); padding: 15px; border-radius: 12px; margin-top: 15px;
+        }
+        .info-item span { font-size: 0.75rem; opacity: 0.8; display: block; }
+        .info-item strong { font-size: 1.1rem; }
 
-* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+        /* LISTAS */
+        .section-header { padding: 10px 20px; font-weight: 700; font-size: 1.1rem; display: flex; justify-content: space-between; align-items: center; }
+        .btn-link { color: var(--primary); font-size: 0.9rem; text-decoration: none; cursor: pointer; }
 
-body {
-    background: var(--bg);
-    color: var(--text);
-    padding-bottom: 100px;
-}
+        .list-card { background: var(--card); border-radius: var(--radius); margin: 0 20px 15px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .list-item {
+            padding: 15px; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;
+        }
+        .list-item:last-child { border: none; }
+        
+        /* ESTILOS ESPECIFICOS DEUDA */
+        .debt-item { padding: 15px; border-bottom: 1px solid #F1F5F9; position: relative; }
+        .debt-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+        .debt-dates {
+            display: flex; justify-content: space-between; margin-top: 10px; padding-top: 8px;
+            border-top: 1px dashed #E2E8F0; font-size: 0.75rem; color: var(--text-light);
+        }
+        .date-badge { background: #EFF6FF; color: var(--primary-dark); padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+        .date-badge.final { background: #FEF3C7; color: #B45309; }
 
-/* TARJETAS NEON */
-.card {
-    background: var(--card);
-    padding: 18px;
-    margin: 15px;
-    border-radius: var(--round);
-    box-shadow: 0 0 10px rgba(255,0,0,0.08);
-    border: 1px solid #1a1a1a;
-}
+        .item-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
+        .item-info p { font-size: 0.8rem; color: var(--text-light); }
+        .item-amount { font-weight: 700; text-align: right; }
+        .tag-q1 { color: #D97706; background: #FEF3C7; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
+        .tag-q2 { color: #2563EB; background: #DBEAFE; padding: 2px 6px; border-radius: 4px; font-size: 0.7rem; }
 
-/* TITULOS */
-h1, h2, h3, h4 {
-    color: var(--text);
-    letter-spacing: 0.5px;
-}
+        .btn-delete { background: none; border: none; color: #cbd5e1; font-size: 1.2rem; cursor: pointer; position: absolute; top: 15px; right: 15px;}
+        .btn-delete:hover { color: var(--danger); }
 
-/* HEADER */
-header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-}
-header h1 {
-    font-size: 1.6rem;
-    font-weight: 800;
-}
+        /* NAVBAR */
+        .nav {
+            position: fixed; bottom: 0; width: 100%; max-width: 600px; background: white;
+            height: 70px; display: flex; justify-content: space-around; align-items: center;
+            border-top: 1px solid #E2E8F0; z-index: 100; left: 50%; transform: translateX(-50%);
+        }
+        .nav-btn { background: none; border: none; display: flex; flex-direction: column; align-items: center; color: var(--text-light); font-size: 0.75rem; width: 33%; }
+        .nav-btn.active { color: var(--primary); font-weight: 600; }
+        .nav-icon { font-size: 1.4rem; margin-bottom: 3px; }
 
-/* HERO NEON */
-.hero {
-    background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
-    border: 1px solid rgba(255, 45, 69, 0.5);
-    box-shadow: 0 0 20px rgba(255, 20, 50, 0.3);
-    color: white;
-    padding: 25px;
-    border-radius: 22px;
-    margin: 15px;
-}
+        /* FAB & MODALS */
+        .fab {
+            position: fixed; bottom: 85px; right: 20px; width: 56px; height: 56px;
+            background: var(--text); color: white; border-radius: 50%; display: flex;
+            align-items: center; justify-content: center; font-size: 28px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); z-index: 90; cursor: pointer; border: none;
+        }
 
-.hero-amount {
-    font-size: 2.7rem;
-    font-weight: 800;
-    margin-top: 10px;
-    text-shadow: 0 0 12px rgba(255, 45, 69, 0.6);
-}
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
+            z-index: 200; display: none; align-items: flex-end; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal-content {
+            background: white; width: 100%; max-width: 600px; border-radius: 24px 24px 0 0;
+            padding: 25px; max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease;
+        }
+        @keyframes slideUp { from{transform:translateY(100%)} to{transform:translateY(0)} }
 
-/* BOTON NEON */
-.btn-neon {
-    width:100%;
-    padding: 14px;
-    border-radius: var(--round);
-    border:none;
-    cursor:pointer;
-    background: var(--neon);
-    color:white;
-    box-shadow: var(--shadow-neon);
-    font-size:1rem;
-    margin-top:10px;
-    font-weight:700;
-    letter-spacing:1px;
-}
-.btn-neon:hover {
-    background: var(--neon-soft);
-    box-shadow: 0 0 20px rgba(255, 36, 73, 0.6);
-}
+        .form-group { margin-bottom: 15px; }
+        .form-label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 5px; }
+        .form-input {
+            width: 100%; padding: 14px; border: 1px solid #E2E8F0; border-radius: 12px;
+            font-size: 1rem; background: #F8FAFC; outline: none;
+        }
+        .btn-primary {
+            width: 100%; padding: 16px; background: var(--primary); color: white; border: none;
+            border-radius: 12px; font-weight: 600; font-size: 1rem; margin-top: 10px; cursor: pointer;
+        }
+        
+        .tabs { display: flex; background: #F1F5F9; padding: 5px; border-radius: 12px; margin-bottom: 20px; }
+        .tab { flex: 1; text-align: center; padding: 10px; border-radius: 8px; font-size: 0.9rem; color: #64748B; cursor: pointer; }
+        .tab.active { background: white; color: var(--primary); font-weight: 600; shadow: 0 2px 4px rgba(0,0,0,0.05); }
 
-/* NAVBAR */
-.navbar {
-    position: fixed;
-    bottom: 0;
-    background:#111;
-    height:70px;
-    width:100%;
-    display:flex;
-    justify-content:space-around;
-    align-items:center;
-    border-top:1px solid #222;
-}
-.nav-item {
-    text-align:center;
-    font-size:0.75rem;
-    color: var(--text-soft);
-}
-.nav-item.active { color: var(--neon); }
-
-/* LISTA */
-.list-item {
-    padding:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    border-bottom:1px solid #222;
-}
-.list-item:last-child { border:none; }
-
-.item-amount {
-    font-weight:bold;
-}
-
-/* FAB */
-.fab {
-    position:fixed;
-    right:20px;
-    bottom:95px;
-    width:60px;
-    height:60px;
-    background:var(--neon);
-    border:none;
-    border-radius:50%;
-    color:white;
-    font-size:32px;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    box-shadow:var(--shadow-neon);
-}
-
-/* MODAL */
-.modal-overlay {
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:rgba(0,0,0,0.65);
-    display:none;
-    justify-content:flex-end;
-}
-.modal-overlay.open { display:flex; }
-.modal {
-    background:#111;
-    width:100%;
-    padding:25px;
-    border-radius:25px 25px 0 0;
-    height:80vh;
-    overflow-y:auto;
-    box-shadow:0 0 20px rgba(255,20,50,0.2);
-}
-
-/* INPUTS */
-.input {
-    width:100%;
-    padding:13px;
-    border-radius:12px;
-    border:1px solid #222;
-    background:#1a1a1a;
-    color:white;
-    margin-bottom:15px;
-}
-
-/* TABS */
-.tabs { display:flex; background:#1b1b1b; padding:6px; border-radius:14px; }
-.tab {
-    flex:1;
-    text-align:center;
-    padding:10px;
-    border-radius:10px;
-    color:#888;
-    cursor:pointer;
-}
-.tab.active { background:#000; color:var(--neon); font-weight:600; }
-
-/* DEUDAS */
-.progress {
-    height:6px;
-    width:100%;
-    background:#222;
-    border-radius:3px;
-    margin: 8px 0;
-}
-.progress div {
-    height:100%;
-    background:var(--neon);
-    border-radius:3px;
-    box-shadow:0 0 10px rgba(255, 36, 73, 0.8);
-}
-</style>
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+    </style>
 </head>
-
 <body>
 
-<!-- ===================================== -->
-<!--         🟥 DASHBOARD PRINCIPAL        -->
-<!-- ===================================== -->
-<section id="view-dash">
-<header>
-    <h1>Mi Finanzas</h1>
-    <button onclick="openConfig()" style="color:var(--neon); background:none; border:none;">⚙️</button>
-</header>
+<div class="container">
+    
+    <section id="view-dash" class="view-section active">
+        <header>
+            <h1>Mi Finanzas</h1>
+            <button onclick="openConfig()" style="border:1px solid #E2E8F0; background:white; padding:6px 12px; border-radius:20px; font-size:0.8rem;">⚙️ Salario</button>
+        </header>
 
-<div class="hero">
-    <span style="opacity:.85;">Disponible Real</span>
-    <div id="displayBalance" class="hero-amount">$0.00</div>
+        <div class="hero-card">
+            <div class="hero-label">Disponible Real</div>
+            <div class="hero-amount" id="displayBalance">$0.00</div>
+            <div class="info-grid">
+                <div class="info-item">
+                    <span>Salario Líquido</span>
+                    <strong id="displaySalary">$0.00</strong>
+                </div>
+                <div class="info-item">
+                    <span>Reserva Sugerida</span>
+                    <strong id="displayReserve">$0.00</strong>
+                </div>
+            </div>
+            <div style="margin-top: 15px; font-size: 0.85rem; opacity: 0.9; text-align: center; background: rgba(0,0,0,0.1); padding: 5px; border-radius: 8px;">
+                <span id="currentQuincena">Calculando fecha...</span>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <span>💡 Sugerencias de Pago (50/50)</span>
+            <span class="btn-link" onclick="openExpenseManager()">Gestionar</span>
+        </div>
+        <div class="list-card" id="suggestionList">
+            </div>
+
+        <div class="section-header">
+            <span>📅 Deudas y Plazos</span>
+        </div>
+        <div class="list-card" id="debtsList">
+            </div>
+    </section>
+
+    <section id="view-history" class="view-section">
+        <header>
+            <h1>Historial</h1>
+            <button onclick="clearHistory()" style="color:var(--danger); background:none; border:none;">Borrar</button>
+        </header>
+        <div class="list-card">
+            <ul id="transactionList" style="list-style: none; padding: 0;"></ul>
+        </div>
+    </section>
+
 </div>
 
-<h3 style="padding-left:20px; margin-bottom:10px;">Sugerencias 50/50</h3>
-<div class="card" id="suggestionList"></div>
+<div class="nav">
+    <button class="nav-btn active" onclick="switchView('dash', this)">
+        <span class="nav-icon">📊</span>Resumen
+    </button>
+    <button class="nav-btn" onclick="switchView('history', this)">
+        <span class="nav-icon">📝</span>Historial
+    </button>
+</div>
 
-<h3 style="padding-left:20px; margin-top:20px;">Deudas y Plazos</h3>
-<div class="card" id="debtsList"></div>
-</section>
-
-<!-- ===================================== -->
-<!--               📜 HISTORIAL            -->
-<!-- ===================================== -->
-<section id="view-history" style="display:none;">
-<header>
-    <h1>Historial</h1>
-    <button onclick="clearHistory()" style="color:var(--neon); background:none; border:none;">Borrar</button>
-</header>
-<div class="card" id="transactionList"></div>
-</section>
-
-<!-- ===================================== -->
-<!--                 ➕ FAB                 -->
-<!-- ===================================== -->
 <button class="fab" onclick="openAddModal()">+</button>
 
-<!-- ===================================== -->
-<!--              MODAL NUEVO              -->
-<!-- ===================================== -->
 <div class="modal-overlay" id="addModal">
-    <div class="modal">
-
-        <h2 style="text-align:center;">Nuevo Registro</h2>
-
+    <div class="modal-content">
+        <h2 style="margin-bottom: 20px; text-align: center;">Nuevo Registro</h2>
         <div class="tabs">
-            <div class="tab active" onclick="setTab('expense', this)">Gasto</div>
-            <div class="tab" onclick="setTab('debt', this)">Deuda</div>
-            <div class="tab" onclick="setTab('fixed', this)">Fijo</div>
+            <div class="tab active" onclick="setTab('expense', this)">Gasto Diario</div>
+            <div class="tab" onclick="setTab('debt', this)">Deuda/Plazo</div>
+            <div class="tab" onclick="setTab('fixed', this)">Gasto Fijo</div>
         </div>
 
-        <!-- FORMULARIOS -->
-        <div id="form-expense">
-            <input id="exDesc" class="input" type="text" placeholder="Concepto">
-            <input id="exAmount" class="input" type="number" placeholder="Monto">
-            <button class="btn-neon" onclick="addTransaction()">Registrar</button>
-        </div>
+        <form id="formExpense" class="active-form">
+            <div class="form-group">
+                <label class="form-label">Concepto</label>
+                <input type="text" id="exDesc" class="form-input" placeholder="Ej. Supermercado">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Monto ($)</label>
+                <input type="number" id="exAmount" class="form-input" step="0.01" placeholder="0.00">
+            </div>
+            <button type="button" onclick="addTransaction()" class="btn-primary">Registrar Gasto</button>
+        </form>
 
-        <div id="form-debt" style="display:none;">
-            <input id="debtName" class="input" type="text" placeholder="Artículo">
-            <input id="debtTotal" class="input" type="number" placeholder="Valor total">
-            <input id="debtMonths" class="input" type="number" placeholder="Meses">
-            <input id="debtStart" class="input" type="date">
-            <input id="debtPaid" class="input" type="number" value="0">
-            <button class="btn-neon" onclick="addDebt()">Guardar Deuda</button>
-        </div>
+        <form id="formDebt" style="display:none;">
+            <div class="form-group">
+                <label class="form-label">Nombre del Artículo</label>
+                <input type="text" id="debtName" class="form-input" placeholder="Ej. TV 50 Pulgadas">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Valor Total ($)</label>
+                <input type="number" id="debtTotal" class="form-input" step="0.01">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Plazo (Meses)</label>
+                <input type="number" id="debtMonths" class="form-input" placeholder="12">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Fecha Inicio (Primer Pago)</label>
+                <input type="date" id="debtStart" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Cuotas ya pagadas (Si aplica)</label>
+                <input type="number" id="debtPaid" class="form-input" value="0">
+            </div>
+            <button type="button" onclick="addDebt()" class="btn-primary">Guardar Plazo</button>
+        </form>
 
-        <div id="form-fixed" style="display:none;">
-            <input id="fixName" class="input" type="text" placeholder="Nombre">
-            <input id="fixAmount" class="input" type="number" placeholder="Monto mensual">
-            <input id="fixDay" class="input" type="number" placeholder="Día límite">
-            <button class="btn-neon" onclick="addFixed()">Guardar Fijo</button>
-        </div>
-
-        <button onclick="closeModal('addModal')" style="margin-top:20px; background:none; border:none; color:#777;">Cancelar</button>
+        <form id="formFixed" style="display:none;">
+            <div style="background:#EFF6FF; padding:10px; border-radius:8px; margin-bottom:15px; font-size:0.85rem; color:#1E40AF;">
+                Sirve para recordarte guardar la mitad en la quincena anterior.
+            </div>
+            <div class="form-group">
+                <label class="form-label">Nombre (Ej. Alquiler)</label>
+                <input type="text" id="fixName" class="form-input">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Monto Mensual ($)</label>
+                <input type="number" id="fixAmount" class="form-input" step="0.01">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Día Límite de Pago (1-30)</label>
+                <input type="number" id="fixDay" class="form-input">
+            </div>
+            <button type="button" onclick="addFixed()" class="btn-primary">Guardar Fijo</button>
+        </form>
+        
+        <button onclick="closeModal('addModal')" style="width:100%; margin-top:15px; background:none; border:none; color:#64748B;">Cancelar</button>
     </div>
 </div>
 
-<!-- ===================================== -->
-<!--           ⚙️ MODAL CONFIG              -->
-<!-- ===================================== -->
 <div class="modal-overlay" id="configModal">
-    <div class="modal">
-        <h2>Configurar Salario</h2>
-        <input id="confNominal" class="input" type="number" placeholder="Salario bruto">
-        <input id="confManual" class="input" type="number" placeholder="Corrección manual">
-        <button class="btn-neon" onclick="saveSalaryConfig()">Guardar</button>
-        <button onclick="closeModal('configModal')" style="background:none; border:none; margin-top:20px; color:#777;">Cerrar</button>
+    <div class="modal-content">
+        <h2>💰 Configurar Salario</h2>
+        <p style="color:#64748B; margin-bottom:20px; font-size:0.9rem;">Calculadora Ley SV 2025</p>
+
+        <div class="form-group">
+            <label class="form-label">Salario Nominal (Bruto) $</label>
+            <input type="number" id="confNominal" class="form-input" placeholder="Ej. 580" oninput="calculatePreview()">
+        </div>
+
+        <div style="background:#F1F5F9; padding:15px; border-radius:12px; margin-bottom:20px;">
+            <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:5px;">
+                <span>ISSS (3%)</span> <span id="prevISSS">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:5px;">
+                <span>AFP (7.25%)</span> <span id="prevAFP">$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:5px;">
+                <span>Renta</span> <span id="prevRenta">$0.00</span>
+            </div>
+            <div style="border-top:1px solid #CBD5E1; margin-top:5px; padding-top:5px; display:flex; justify-content:space-between; font-weight:700;">
+                <span>Líquido Mensual</span> <span id="prevLiquid">$0.00</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" style="color:var(--primary);">✍️ Corrección Manual</label>
+            <input type="number" id="confManual" class="form-input" placeholder="Si el cálculo falla, pon tu líquido real aquí">
+        </div>
+
+        <button onclick="saveSalaryConfig()" class="btn-primary">Guardar Configuración</button>
+        <button onclick="closeModal('configModal')" style="width:100%; margin-top:15px; background:none; border:none; color:#64748B;">Cerrar</button>
     </div>
 </div>
 
-<!-- ===================================== -->
-<!--             JS OPTIMIZADO             -->
-<!-- ===================================== -->
+<div class="modal-overlay" id="expenseManagerModal">
+    <div class="modal-content">
+        <h2>Gestionar Gastos Fijos</h2>
+        <div id="manageExpensesList"></div>
+        <button onclick="closeModal('expenseManagerModal')" class="btn-primary" style="background:#64748B;">Cerrar</button>
+    </div>
+</div>
+
 <script>
+    // --- ESTADO INICIAL ---
+    let data = {
+        salaryBruto: 0,
+        salaryManual: 0,
+        balance: 0,
+        expenses: [], 
+        debts: [],    // {id, name, total, months, paid, startDate}
+        transactions: []
+    };
 
-let data = {
-    salaryBruto:0,
-    salaryManual:0,
-    balance:0,
-    expenses:[],
-    debts:[],
-    transactions:[]
-};
-
-if(localStorage.getItem("finred")){
-    data = JSON.parse(localStorage.getItem("finred"));
-}
-
-init();
-
-/* ========================== */
-/*      FUNCIONES BASE        */
-/* ========================== */
-function init(){
-    updateDashboard();
-    renderHistory();
-}
-
-function save(){
-    localStorage.setItem("finred", JSON.stringify(data));
-}
-
-/* ========================== */
-/*     SALARIO Y DISPLAY      */
-/* ========================== */
-function getSalary(){
-    if(data.salaryManual>0){
-        return {liq:data.salaryManual};
+    // --- CARGAR DATOS ---
+    if(localStorage.getItem('finAppSV')) {
+        data = JSON.parse(localStorage.getItem('finAppSV'));
     }
-    const n = data.salaryBruto;
-    const isss = Math.min(n,1000)*0.03;
-    const afp = n*0.0725;
-    let renta=0;
-    const t = n - isss - afp;
-    if(t>472 && t<=895.24) renta=((t-472)*0.1)+17.67;
-    else if(t>895.24 && t<=2038.10) renta=((t-895.24)*0.2)+60;
-    else if(t>2038.10) renta=((t-2038.10)*0.3)+288.57;
-    return {liq:t-renta};
-}
-
-function updateDashboard(){
-    document.getElementById("displayBalance").innerText = "$"+data.balance.toFixed(2);
-    renderSuggestions();
-    renderDebts();
-}
-
-/* ========================== */
-/*       GASTOS FIJOS         */
-/* ========================== */
-function renderSuggestions(){
-    let cont = document.getElementById("suggestionList");
-    cont.innerHTML = "";
-    if(data.expenses.length===0){
-        cont.innerHTML="<div style='text-align:center;color:#666;'>Sin gastos fijos.</div>";
-        return;
-    }
-    data.expenses.forEach(e=>{
-        let div=document.createElement("div");
-        div.className="list-item";
-        div.innerHTML=`<div><strong>${e.name}</strong><br><small style='color:#777;'>Día ${e.day}</small></div>
-                       <div class="item-amount" style="color:var(--neon);">$${e.amount.toFixed(2)}</div>`;
-        cont.appendChild(div);
-    });
-}
-
-/* ========================== */
-/*           DEUDAS           */
-/* ========================== */
-function renderDebts(){
-    let cont=document.getElementById("debtsList");
-    cont.innerHTML="";
-    if(data.debts.length===0){
-        cont.innerHTML="<div style='text-align:center;color:#666;'>No hay deudas activas.</div>";
-        return;
-    }
-    data.debts.forEach((d,i)=>{
-        const cuota=d.total/d.months;
-        const prog=(d.paid/d.months)*100;
-
-        let div=document.createElement("div");
-        div.className="list-item";
-        div.style.flexDirection="column";
-        div.style.alignItems="flex-start";
-
-        div.innerHTML=`
-            <div style="width:100%; display:flex; justify-content:space-between;">
-                <strong>${d.name}</strong>
-                <button onclick="payInstallment(${i})" style="background:none;border:none;color:var(--neon);font-size:.9rem;">Pagar</button>
-            </div>
-
-            <small style="color:#777;">${d.paid}/${d.months} cuotas</small>
-
-            <div class="progress"><div style="width:${prog}%"></div></div>
-
-            <small style="color:#999;">Cuota: $${cuota.toFixed(2)}</small>
-        `;
-
-        cont.appendChild(div);
-    });
-}
-
-/* ========================== */
-/*         GASTO NORMAL       */
-/* ========================== */
-function addTransaction(){
-    let d=document.getElementById("exDesc").value;
-    let a=parseFloat(document.getElementById("exAmount").value);
-    if(!d||!a) return;
-
-    data.balance -= a;
-    data.transactions.unshift({
-        desc:d,
-        amount:-a,
-        date:new Date().toLocaleDateString()
-    });
-
-    save();
-    closeModal("addModal");
+    
     init();
-}
 
-/* ========================== */
-/*           DEUDAS           */
-/* ========================== */
-function addDebt(){
-    const n=document.getElementById("debtName").value;
-    const t=parseFloat(document.getElementById("debtTotal").value);
-    const m=parseInt(document.getElementById("debtMonths").value);
-    const s=document.getElementById("debtStart").value;
-    const p=parseInt(document.getElementById("debtPaid").value)||0;
-
-    if(!n||!t||!m||!s) return;
-
-    data.debts.push({name:n,total:t,months:m,startDate:s,paid:p});
-    save();
-    closeModal("addModal");
-    init();
-}
-
-function payInstallment(i){
-    let d=data.debts[i];
-    const cuota=d.total/d.months;
-    if(d.paid>=d.months) return alert("Deuda ya finalizada.");
-
-    d.paid++;
-    data.balance -= cuota;
-
-    data.transactions.unshift({
-        desc:"Cuota "+d.name,
-        amount:-cuota,
-        date:new Date().toLocaleDateString()
-    });
-
-    save();
-    init();
-}
-
-/* ========================== */
-/*        GASTO FIJO          */
-/* ========================== */
-function addFixed(){
-    const n=document.getElementById("fixName").value;
-    const a=parseFloat(document.getElementById("fixAmount").value);
-    const d=parseInt(document.getElementById("fixDay").value);
-    if(!n||!a||!d) return;
-
-    data.expenses.push({name:n,amount:a,day:d});
-    save();
-    closeModal("addModal");
-    init();
-}
-
-/* ========================== */
-/*         HISTORIAL          */
-/* ========================== */
-function renderHistory(){
-    const cont=document.getElementById("transactionList");
-    cont.innerHTML="";
-    if(data.transactions.length===0){
-        cont.innerHTML="<div style='text-align:center;color:#666;'>Sin movimientos.</div>";
-        return;
+    function init() {
+        updateDashboard();
+        renderHistory();
+        calculatePreview();
+        // Default date input to today
+        document.getElementById('debtStart').value = new Date().toISOString().split('T')[0];
     }
-    data.transactions.forEach(t=>{
-        let div=document.createElement("div");
-        div.className="list-item";
-        div.innerHTML=`
-            <div>
-                <strong>${t.desc}</strong><br>
-                <small style="color:#777;">${t.date}</small>
-            </div>
-            <div style="color:${t.amount<0?'var(--neon)':'#0f0'}; font-weight:bold;">
-                ${t.amount.toFixed(2)}
-            </div>
-        `;
-        cont.appendChild(div);
-    });
-}
-function clearHistory(){
-    if(confirm("¿Limpiar historial?")){
-        data.transactions=[];
-        data.balance=0;
-        save();
-        init();
+
+    // --- CÁLCULOS SALARIO ---
+    function getSalaryData() {
+        const nominal = data.salaryBruto || 0;
+        if(data.salaryManual && data.salaryManual > 0) {
+            return { liquidMonthly: data.salaryManual, liquidQ: data.salaryManual / 2 };
+        }
+        const isss = Math.min(nominal, 1000) * 0.03;
+        const afp = nominal * 0.0725;
+        const taxable = nominal - isss - afp;
+        let renta = 0;
+        if(taxable > 472.00 && taxable <= 895.24) renta = ((taxable - 472.00) * 0.10) + 17.67;
+        else if(taxable > 895.24 && taxable <= 2038.10) renta = ((taxable - 895.24) * 0.20) + 60.00;
+        else if(taxable > 2038.10) renta = ((taxable - 2038.10) * 0.30) + 288.57;
+        const liquid = taxable - renta;
+        return { liquidMonthly: liquid, liquidQ: liquid / 2, isss, afp, renta };
     }
-}
 
-/* ========================== */
-/*           MODALES          */
-/* ========================== */
-function openAddModal(){ document.getElementById("addModal").classList.add("open"); }
-function closeModal(id){ document.getElementById(id).classList.remove("open"); }
-function openConfig(){
-    document.getElementById("confNominal").value=data.salaryBruto;
-    document.getElementById("confManual").value=data.salaryManual;
-    document.getElementById("configModal").classList.add("open");
-}
+    // --- DASHBOARD ---
+    function updateDashboard() {
+        const salData = getSalaryData();
+        const today = new Date();
+        const isQ1 = today.getDate() <= 15;
+        
+        document.getElementById('currentQuincena').innerText = isQ1 ? `📅 1ª Quincena (1-15)` : `📅 2ª Quincena (16-30)`;
+        document.getElementById('displaySalary').innerText = `$${salData.liquidQ.toFixed(2)}`;
+        document.getElementById('displayBalance').innerText = `$${data.balance.toFixed(2)}`;
 
-/* ========================== */
-/*             TABS           */
-/* ========================== */
-function setTab(t,el){
-    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-    el.classList.add("active");
+        // Sugerencias 50/50
+        const list = document.getElementById('suggestionList');
+        list.innerHTML = '';
+        let totalReserve = 0;
 
-    document.getElementById("form-expense").style.display="none";
-    document.getElementById("form-debt").style.display="none";
-    document.getElementById("form-fixed").style.display="none";
+        if(data.expenses.length === 0) list.innerHTML = '<div style="padding:20px; text-align:center; color:#94a3b8;">No hay gastos fijos.</div>';
 
-    document.getElementById("form-"+t).style.display="block";
-}
+        data.expenses.forEach(exp => {
+            let suggest = 0, msg = '', tag = '';
+            if(isQ1) {
+                if(exp.day > 15) { suggest = exp.amount/2; msg = 'Guarda la mitad'; tag = '<span class="tag-q2">Fin de mes</span>'; }
+                else { suggest = exp.amount; msg = 'Pagar completo'; tag = '<span class="tag-q1">Vence ya</span>'; }
+            } else {
+                if(exp.day <= 15) { suggest = exp.amount/2; msg = 'Adelantar mitad'; tag = '<span class="tag-q1">Prox. Quincena</span>'; }
+                else { suggest = exp.amount/2; msg = 'Completar pago'; tag = '<span class="tag-q2">Vence ahora</span>'; }
+            }
+            totalReserve += suggest;
+            const div = document.createElement('div');
+            div.className = 'list-item';
+            div.innerHTML = `
+                <div class="item-info"><h4>${exp.name} ${tag}</h4><p>${msg}</p></div>
+                <div class="item-amount" style="color:var(--primary)">$${suggest.toFixed(2)}</div>`;
+            list.appendChild(div);
+        });
+        document.getElementById('displayReserve').innerText = `$${totalReserve.toFixed(2)}`;
 
-/* ========================== */
-/*          NAVEGACIÓN        */
-/* ========================== */
-function switchView(view){
-    document.getElementById("view-dash").style.display="none";
-    document.getElementById("view-history").style.display="none";
+        // Deudas con Fechas
+        const debtList = document.getElementById('debtsList');
+        debtList.innerHTML = '';
+        if(data.debts.length === 0) debtList.innerHTML = '<div style="padding:15px; text-align:center; font-size:0.9rem; color:#94a3b8;">Sin deudas activas</div>';
+        
+        data.debts.forEach((d, idx) => {
+            const quota = d.total / d.months;
+            const remaining = d.total - (quota * d.paid);
+            const progress = (d.paid / d.months) * 100;
+            
+            // Calculo Fechas
+            let nextDateStr = "N/A";
+            let endDateStr = "N/A";
 
-    document.getElementById("view-"+view).style.display="block";
-}
+            if(d.startDate) {
+                // Parse date strings to avoid timezone issues: YYYY-MM-DD
+                const parts = d.startDate.split('-'); 
+                const startObj = new Date(parts[0], parts[1]-1, parts[2]); // Year, Month (0-based), Day
 
-/* ========================== */
-/*         SALARIO SAVE       */
-/* ========================== */
-function saveSalaryConfig(){
-    let n=parseFloat(document.getElementById("confNominal").value);
-    let m=parseFloat(document.getElementById("confManual").value);
+                // Fecha Final
+                const endObj = new Date(startObj);
+                endObj.setMonth(startObj.getMonth() + parseInt(d.months));
+                endDateStr = endObj.toLocaleDateString('es-ES', { month: 'short', year: 'numeric' });
 
-    if(n) data.salaryBruto=n;
-    data.salaryManual=m||0;
+                // Fecha Proximo Pago (Inicio + Meses Pagados)
+                // Ojo: Si ya pagó todo, no hay próximo.
+                if(d.paid < d.months) {
+                    const nextObj = new Date(startObj);
+                    // El siguiente pago toca después de lo que ya se pagó.
+                    // Si pagué 0, el próximo es el mes 1 (o mes 0 según lógica de inicio).
+                    // Asumiremos que el startDate fue el día de compra, el primer pago es un mes después.
+                    // Ajusta +1 si la compra fue al contado la primera cuota.
+                    nextObj.setMonth(startObj.getMonth() + parseInt(d.paid) + 1); 
+                    nextDateStr = nextObj.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                } else {
+                    nextDateStr = "Finalizado";
+                }
+            }
 
-    save();
-    closeModal("configModal");
-    updateDashboard();
-}
+            const div = document.createElement('div');
+            div.className = 'debt-item';
+            div.innerHTML = `
+                <div class="debt-header">
+                    <strong>${d.name}</strong>
+                    <button onclick="deleteDebt(${idx})" class="btn-delete">×</button>
+                </div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:5px; font-size:0.85rem;">
+                     <span style="color:#64748B;">Cuota: $${quota.toFixed(2)}</span>
+                     <span>${d.paid}/${d.months}</span>
+                </div>
+                <div style="height:6px; background:#F1F5F9; border-radius:3px; margin-bottom:10px;">
+                    <div style="width:${progress}%; height:100%; background:var(--primary); border-radius:3px;"></div>
+                </div>
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <span style="font-size:0.8rem; font-weight:600;">Resta: $${remaining.toFixed(2)}</span>
+                    <button onclick="payInstallment(${idx})" style="background:var(--text); color:white; border:none; padding:6px 10px; border-radius:6px; font-size:0.75rem; cursor:pointer;">Pagar Cuota</button>
+                </div>
+                <div class="debt-dates">
+                    <div>Próx: <span class="date-badge">${nextDateStr}</span></div>
+                    <div>Fin: <span class="date-badge final">${endDateStr}</span></div>
+                </div>
+            `;
+            debtList.appendChild(div);
+        });
+    }
+
+    // --- ACCIONES ---
+    function addTransaction() {
+        const desc = document.getElementById('exDesc').value;
+        const amount = parseFloat(document.getElementById('exAmount').value);
+        if(!desc || !amount) return;
+        data.balance -= amount;
+        data.transactions.unshift({id: Date.now(), desc, amount: -amount, date: new Date().toLocaleDateString()});
+        saveData(); closeModal('addModal'); document.getElementById('formExpense').reset(); init();
+    }
+
+    function addDebt() {
+        const name = document.getElementById('debtName').value;
+        const total = parseFloat(document.getElementById('debtTotal').value);
+        const months = parseInt(document.getElementById('debtMonths').value);
+        const start = document.getElementById('debtStart').value;
+        const paid = parseInt(document.getElementById('debtPaid').value) || 0;
+
+        if(!name || !total || !months || !start) return alert("Faltan datos (incluyendo fecha)");
+
+        data.debts.push({id: Date.now(), name, total, months, paid, startDate: start});
+        saveData(); closeModal('addModal'); document.getElementById('formDebt').reset(); init();
+    }
+
+    function addFixed() {
+        const name = document.getElementById('fixName').value;
+        const amount = parseFloat(document.getElementById('fixAmount').value);
+        const day = parseInt(document.getElementById('fixDay').value);
+        if(!name || !amount || !day) return;
+        data.expenses.push({id: Date.now(), name, amount, day});
+        saveData(); closeModal('addModal'); document.getElementById('formFixed').reset(); init();
+    }
+
+    function payInstallment(idx) {
+        const d = data.debts[idx];
+        const quota = d.total / d.months;
+        if(confirm(`¿Pagar cuota de $${quota.toFixed(2)}?`)) {
+            d.paid++;
+            data.balance -= quota;
+            data.transactions.unshift({id: Date.now(), desc: `Cuota ${d.name}`, amount: -quota, date: new Date().toLocaleDateString()});
+            if(d.paid >= d.months) alert("¡Deuda terminada!");
+            saveData(); init();
+        }
+    }
+
+    function deleteDebt(idx) {
+        if(confirm('¿Borrar esta deuda?')) {
+            data.debts.splice(idx, 1);
+            saveData(); init();
+        }
+    }
+
+    // --- CONFIG & UTILS ---
+    function saveSalaryConfig() {
+        const nom = parseFloat(document.getElementById('confNominal').value);
+        const manual = parseFloat(document.getElementById('confManual').value);
+        if(nom) data.salaryBruto = nom;
+        data.salaryManual = manual || 0;
+        saveData(); closeModal('configModal'); updateDashboard();
+    }
+    
+    function calculatePreview() {
+        const val = parseFloat(document.getElementById('confNominal').value) || 0;
+        const isss = Math.min(val, 1000) * 0.03;
+        const afp = val * 0.0725;
+        const taxable = val - isss - afp;
+        let renta = 0;
+        if(taxable > 472.00 && taxable <= 895.24) renta = ((taxable - 472.00) * 0.10) + 17.67;
+        else if(taxable > 895.24 && taxable <= 2038.10) renta = ((taxable - 895.24) * 0.20) + 60.00;
+        else if(taxable > 2038.10) renta = ((taxable - 2038.10) * 0.30) + 288.57;
+        document.getElementById('prevISSS').innerText = `-$${isss.toFixed(2)}`;
+        document.getElementById('prevAFP').innerText = `-$${afp.toFixed(2)}`;
+        document.getElementById('prevRenta').innerText = `-$${renta.toFixed(2)}`;
+        document.getElementById('prevLiquid').innerText = `$${(taxable - renta).toFixed(2)}`;
+    }
+
+    function openExpenseManager() {
+        const container = document.getElementById('manageExpensesList');
+        container.innerHTML = '';
+        if(data.expenses.length === 0) container.innerHTML = '<p style="text-align:center;">No hay gastos.</p>';
+        data.expenses.forEach((exp, idx) => {
+            const div = document.createElement('div');
+            div.style.cssText = 'padding:10px; border-bottom:1px solid #eee; display:flex; justify-content:space-between; align-items:center;';
+            div.innerHTML = `<div><strong>${exp.name}</strong><br><small>Día ${exp.day} - $${exp.amount}</small></div>
+                <button onclick="data.expenses.splice(${idx},1); saveData(); openExpenseManager(); updateDashboard();" style="color:red; border:none; bg:none; cursor:pointer;">Borrar</button>`;
+            container.appendChild(div);
+        });
+        document.getElementById('expenseManagerModal').classList.add('open');
+    }
+
+    function renderHistory() {
+        const list = document.getElementById('transactionList');
+        list.innerHTML = '';
+        data.transactions.forEach(t => {
+            const li = document.createElement('li'); li.className = 'list-item';
+            li.innerHTML = `<div class="item-info"><h4>${t.desc}</h4><p>${t.date}</p></div><div class="item-amount" style="color:${t.amount<0?'var(--danger)':'var(--success)'}">${t.amount.toFixed(2)}</div>`;
+            list.appendChild(li);
+        });
+    }
+
+    function saveData() { localStorage.setItem('finAppSV', JSON.stringify(data)); }
+    function openAddModal() { document.getElementById('addModal').classList.add('open'); }
+    function openConfig() { document.getElementById('confNominal').value = data.salaryBruto; document.getElementById('configModal').classList.add('open'); calculatePreview(); }
+    function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+    function switchView(id, btn) {
+        document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+        document.getElementById('view-'+id).classList.add('active');
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+    function setTab(m, el) {
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); el.classList.add('active');
+        ['formExpense','formDebt','formFixed'].forEach(f=>document.getElementById(f).style.display='none');
+        if(m==='expense') document.getElementById('formExpense').style.display='block';
+        if(m==='debt') document.getElementById('formDebt').style.display='block';
+        if(m==='fixed') document.getElementById('formFixed').style.display='block';
+    }
+    function clearHistory() { if(confirm("¿Borrar historial?")) { data.transactions=[]; data.balance=0; saveData(); init(); } }
 </script>
-
 </body>
 </html>
