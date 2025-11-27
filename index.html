@@ -2,950 +2,572 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Finanzas SV — Pro</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Control Financiero SV — Dark Neon Red</title>
 
-<!-- Fuente -->
+<!-- Fuente moderna -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-
-/* ============================================================
-   PALETA DE COLORES FINTECH (modo oscuro)
-============================================================ */
+/* =============================== */
+/*      🎇 ESTILO NEON ROJO        */
+/* =============================== */
 :root {
-    --bg: #0C0A0F;
-    --text: #F4F2FF;
-    --text-light: #B8B4C7;
-    --card: #15121B;
-    --card-light: #1F1A29;
-    --purple: #A259FF;
-    --purple-dark: #6A00FF;
-    --purple-light: #C58CFF;
-    --success: #6BFFCE;
-    --danger: #FF6F91;
-    --warning: #FFD966;
-    --radius: 16px;
-    --shadow: 0 0 25px rgba(0,0,0,0.25);
+    --bg: #0a0a0a;
+    --card: #131313;
+    --text: #e5e5e5;
+    --text-soft: #8b8b8b;
+    --neon: #ff1a3c;
+    --neon-soft: #ff3955;
+    --round: 18px;
+    --shadow-neon: 0 0 12px rgba(255, 36, 73, 0.45);
 }
 
-/* ============================================================
-   MODO CLARO
-============================================================ */
-.light {
-    --bg: #F8F9FC;
-    --text: #1A1A1A;
-    --text-light: #555;
-    --card: #FFFFFF;
-    --card-light: #F2F2F8;
-    --purple: #6A00FF;
-    --purple-light: #A259FF;
-    --success: #0dd97a;
-    --danger: #ff4f70;
-}
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
 
-/* ============================================================
-   RESET
-============================================================ */
-* {
-    padding:0;
-    margin:0;
-    box-sizing:border-box;
-    font-family:'Inter', sans-serif;
-    -webkit-tap-highlight-color:transparent;
-}
 body {
     background: var(--bg);
     color: var(--text);
-    padding-bottom: 120px;
-    transition: background .25s ease, color .25s ease;
-}
-.container { 
-    max-width: 600px; 
-    margin: auto;
+    padding-bottom: 100px;
 }
 
-/* ============================================================
-   VISTAS
-============================================================ */
-.view { display:none; }
-.view.active { display:block; animation:fadeIn .35s ease; }
-
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(10px); }
-    to { opacity:1; transform:translateY(0); }
+/* TARJETAS NEON */
+.card {
+    background: var(--card);
+    padding: 18px;
+    margin: 15px;
+    border-radius: var(--round);
+    box-shadow: 0 0 10px rgba(255,0,0,0.08);
+    border: 1px solid #1a1a1a;
 }
 
-/* ============================================================
-   HEADER
-============================================================ */
+/* TITULOS */
+h1, h2, h3, h4 {
+    color: var(--text);
+    letter-spacing: 0.5px;
+}
+
+/* HEADER */
 header {
-    padding:25px 20px 10px;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    padding:20px;
 }
 header h1 {
-    font-size:1.65rem;
-    font-weight:800;
+    font-size: 1.6rem;
+    font-weight: 800;
 }
-.back-btn {
-    background:none;
+
+/* HERO NEON */
+.hero {
+    background: linear-gradient(135deg, #1a1a1a, #0f0f0f);
+    border: 1px solid rgba(255, 45, 69, 0.5);
+    box-shadow: 0 0 20px rgba(255, 20, 50, 0.3);
+    color: white;
+    padding: 25px;
+    border-radius: 22px;
+    margin: 15px;
+}
+
+.hero-amount {
+    font-size: 2.7rem;
+    font-weight: 800;
+    margin-top: 10px;
+    text-shadow: 0 0 12px rgba(255, 45, 69, 0.6);
+}
+
+/* BOTON NEON */
+.btn-neon {
+    width:100%;
+    padding: 14px;
+    border-radius: var(--round);
     border:none;
-    color:var(--purple-light);
-    font-size:1.7rem;
     cursor:pointer;
-    transition:.2s ease;
-}
-.back-btn:hover { opacity:.7; }
-
-/* ============================================================
-   TARJETA PRINCIPAL — SALDO
-============================================================ */
-.main-card {
-    background: linear-gradient(155deg, var(--purple-dark), var(--purple));
-    padding:30px;
-    border-radius:22px;
-    margin:0 20px;
-    box-shadow:var(--shadow);
-    transform:translateY(0);
-    transition:.25s ease;
-}
-.main-card:hover {
-    transform:translateY(-3px);
-}
-.main-label { 
-    font-size:.95rem; 
-    opacity:.9; 
-    letter-spacing:.3px;
-}
-.main-amount {
-    margin-top:6px;
-    font-size:3rem;
-    font-weight:800;
-    letter-spacing:-1px;
+    background: var(--neon);
     color:white;
-}
-
-/* ============================================================
-   ACCIONES
-============================================================ */
-.action-row {
-    display:flex;
-    gap:15px;
-    margin:20px;
-}
-.action-btn {
-    flex:1;
-    background:var(--card-light);
-    padding:20px 15px;
-    border-radius:var(--radius);
-    border:1px solid #272232;
-    text-align:center;
-    cursor:pointer;
-    transition:.25s ease;
-    box-shadow:0 3px 12px rgba(0,0,0,0.15);
-}
-.action-btn:hover {
-    transform:scale(1.03);
-    background:#221b2c;
-}
-.action-btn span {
-    font-size:2rem;
-    display:block;
-    margin-bottom:5px;
-}
-.action-btn p {
-    font-size:.82rem;
-    color:var(--text-light);
-    margin-top:3px;
-}
-
-/* ============================================================
-   LISTAS
-============================================================ */
-.section-title {
-    padding:0 20px;
-    margin-top:25px;
-    margin-bottom:10px;
+    box-shadow: var(--shadow-neon);
+    font-size:1rem;
+    margin-top:10px;
     font-weight:700;
-    font-size:1.12rem;
+    letter-spacing:1px;
 }
-.card-list {
-    background:var(--card);
-    border-radius:var(--radius);
-    margin:0 20px;
-    border:1px solid #272232;
-    overflow:hidden;
+.btn-neon:hover {
+    background: var(--neon-soft);
+    box-shadow: 0 0 20px rgba(255, 36, 73, 0.6);
 }
+
+/* NAVBAR */
+.navbar {
+    position: fixed;
+    bottom: 0;
+    background:#111;
+    height:70px;
+    width:100%;
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    border-top:1px solid #222;
+}
+.nav-item {
+    text-align:center;
+    font-size:0.75rem;
+    color: var(--text-soft);
+}
+.nav-item.active { color: var(--neon); }
+
+/* LISTA */
 .list-item {
-    padding:17px;
-    border-bottom:1px solid #272232;
+    padding:15px;
     display:flex;
     justify-content:space-between;
     align-items:center;
-    transition:.2s;
-}
-.list-item:hover {
-    background:#1b1623;
+    border-bottom:1px solid #222;
 }
 .list-item:last-child { border:none; }
 
-.item-left h4 { font-size:1rem; }
-.item-left p { font-size:.82rem; color:var(--text-light); }
-
-.amount-ingreso {
-    color:var(--success);
-    font-weight:700;
-}
-.amount-egreso {
-    color:var(--danger);
-    font-weight:700;
+.item-amount {
+    font-weight:bold;
 }
 
-/* ============================================================
-   DEUDAS
-============================================================ */
-.deuda-progress {
-    width:100%;
-    background:#2a2237;
-    height:8px;
-    border-radius:10px;
-    margin-top:8px;
-}
-.deuda-bar {
-    height:8px;
-    background:var(--purple);
-    border-radius:10px;
-    transition:width .25s ease;
-}
-
-/* ============================================================
-   FAB EXPANDIBLE
-============================================================ */
-.fab-container {
+/* FAB */
+.fab {
     position:fixed;
-    bottom:85px;
-    right:25px;
-    z-index:200;
-}
-.fab-main {
-    width:65px;
-    height:65px;
-    border-radius:50%;
-    background:var(--purple);
+    right:20px;
+    bottom:95px;
+    width:60px;
+    height:60px;
+    background:var(--neon);
     border:none;
+    border-radius:50%;
     color:white;
-    font-size:35px;
-    cursor:pointer;
-    box-shadow:0 8px 25px rgba(162,89,255,0.5);
-    transition:.25s;
-}
-.fab-main:hover { transform:scale(1.07); }
-
-.fab-group {
+    font-size:32px;
     display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:12px;
-    margin-bottom:12px;
-    opacity:0;
-    pointer-events:none;
-    transform:translateY(20px);
-    transition:all .25s ease;
-}
-.fab-group.show {
-    opacity:1;
-    pointer-events:auto;
-    transform:translateY(0);
-}
-
-.fab-small {
-    background:var(--card-light);
-    border:1px solid #272232;
-    padding:10px 15px;
-    color:var(--text);
-    border-radius:12px;
+    justify-content:center;
+    align-items:center;
     cursor:pointer;
-    box-shadow:0 5px 18px rgba(0,0,0,0.35);
-    transition:.25s;
-}
-.fab-small:hover {
-    background:#221a2d;
+    box-shadow:var(--shadow-neon);
 }
 
-/* ============================================================
-   MODALES GENERALES
-============================================================ */
+/* MODAL */
 .modal-overlay {
     position:fixed;
-    top:0; 
-    left:0;
-    width:100%; 
-    height:100%;
-    background:rgba(10,0,20,0.7);
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(0,0,0,0.65);
     display:none;
     justify-content:flex-end;
-    z-index:300;
 }
 .modal-overlay.open { display:flex; }
-
-.modal-box {
-    background:var(--card);
+.modal {
+    background:#111;
     width:100%;
-    max-width:600px;
+    padding:25px;
     border-radius:25px 25px 0 0;
-    padding:25px;
-    max-height:85vh;
+    height:80vh;
     overflow-y:auto;
-    box-shadow:var(--shadow);
-    animation:slideUp .35s ease;
+    box-shadow:0 0 20px rgba(255,20,50,0.2);
 }
 
-@keyframes slideUp {
-    from { transform:translateY(50px); opacity:0; }
-    to { transform:translateY(0); opacity:1; }
-}
-
-.form-label { font-weight:600; margin-bottom:5px; }
-.form-input {
+/* INPUTS */
+.input {
     width:100%;
-    padding:14px;
-    border-radius:14px;
+    padding:13px;
+    border-radius:12px;
+    border:1px solid #222;
+    background:#1a1a1a;
+    color:white;
     margin-bottom:15px;
-    border:1px solid #272232;
-    background:#0F0B15;
-    color:white;
-    transition:border .25s;
-}
-.form-input:focus {
-    border:1px solid var(--purple);
-    outline:none;
 }
 
-.btn-primary {
-    background:var(--purple);
-    padding:16px;
-    border:none;
-    color:white;
-    width:100%;
-    border-radius:14px;
-    font-weight:600;
-    font-size:1rem;
-    cursor:pointer;
-}
-.btn-primary:hover { opacity:.8; }
-
-.btn-cancel {
-    background:none;
-    border:none;
-    color:var(--text-light);
-    margin-top:12px;
-    width:100%;
-    font-size:.9rem;
-    cursor:pointer;
-}
-
-/* ============================================================
-   MODAL SALARIO
-============================================================ */
-#modalSalary .salary-modal {
-    background:var(--card);
-    padding:25px;
-    border-radius:18px;
-    max-width:90%;
-    margin:auto;
+/* TABS */
+.tabs { display:flex; background:#1b1b1b; padding:6px; border-radius:14px; }
+.tab {
+    flex:1;
     text-align:center;
-    border:1px solid #272232;
-    box-shadow:var(--shadow);
-    animation:fadeIn .35s;
-}
-
-.salary-modal h3 { margin-bottom:10px; }
-.salary-modal input {
-    width:100%;
-    padding:12px;
-    border-radius:12px;
-    border:1px solid #272232;
-    background:#0F0B15;
-    color:white;
-    margin-top:10px;
-}
-.salary-modal button {
-    padding:14px;
-    border-radius:12px;
-    border:none;
-    width:100%;
-    font-weight:700;
+    padding:10px;
+    border-radius:10px;
+    color:#888;
     cursor:pointer;
-    margin-top:10px;
 }
+.tab.active { background:#000; color:var(--neon); font-weight:600; }
 
-/* ============================================================
-   NOTIFICACIONES (Toast)
-============================================================ */
-.toast {
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%) translateY(40px);
-    background:var(--card-light);
-    padding:15px 20px;
-    border-radius:14px;
-    color:var(--text);
-    opacity:0;
-    pointer-events:none;
-    transition:all .3s ease;
-    border:1px solid #272232;
-    box-shadow:var(--shadow);
+/* DEUDAS */
+.progress {
+    height:6px;
+    width:100%;
+    background:#222;
+    border-radius:3px;
+    margin: 8px 0;
 }
-.toast.show {
-    transform:translateX(-50%) translateY(0);
-    opacity:1;
+.progress div {
+    height:100%;
+    background:var(--neon);
+    border-radius:3px;
+    box-shadow:0 0 10px rgba(255, 36, 73, 0.8);
 }
+</style>
+</head>
 
-/* ============================================================
-   GRÁFICA MENSUAL
-============================================================ */
-#graficaContainer {
-    padding:20px;
-    margin:0
-<!-- ============================================================
-   DASHBOARD
-============================================================ -->
-<div id="viewDashboard" class="view active">
+<body>
 
-    <header>
-        <h1>Finanzas SV</h1>
-        <button onclick="toggleTheme()" class="back-btn">☀️/🌙</button>
-    </header>
-
-    <div class="main-card">
-        <div class="main-label">Saldo Disponible</div>
-        <div id="mainBalance" class="main-amount">$0.00</div>
-    </div>
-
-    <div class="action-row">
-        <div class="action-btn" onclick="openView('viewIngresos')">
-            <span>💰</span><p>Ingresos</p>
-        </div>
-        <div class="action-btn" onclick="openView('viewGastos')">
-            <span>💸</span><p>Gastos</p>
-        </div>
-        <div class="action-btn" onclick="openView('viewDeudas')">
-            <span>📅</span><p>Deudas</p>
-        </div>
-    </div>
-
-    <div class="section-title">Últimos Movimientos</div>
-    <div class="card-list" id="recentList"></div>
-
-    <br>
-    <div class="section-title" onclick="openView('viewGrafica')" style="cursor:pointer;">
-        📊 Ver Gráfica Mensual
-    </div>
-
-</div>
-
-<!-- ============================================================
-   INGRESOS
-============================================================ -->
-<div id="viewIngresos" class="view">
+<!-- ===================================== -->
+<!--         🟥 DASHBOARD PRINCIPAL        -->
+<!-- ===================================== -->
+<section id="view-dash">
 <header>
-    <h1>Ingresos</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+    <h1>Mi Finanzas</h1>
+    <button onclick="openConfig()" style="color:var(--neon); background:none; border:none;">⚙️</button>
 </header>
-<div class="card-list" id="listaIngresos"></div>
+
+<div class="hero">
+    <span style="opacity:.85;">Disponible Real</span>
+    <div id="displayBalance" class="hero-amount">$0.00</div>
 </div>
 
-<!-- ============================================================
-   GASTOS
-============================================================ -->
-<div id="viewGastos" class="view">
-<header>
-    <h1>Gastos</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
-</header>
-<div class="card-list" id="listaGastos"></div>
-</div>
+<h3 style="padding-left:20px; margin-bottom:10px;">Sugerencias 50/50</h3>
+<div class="card" id="suggestionList"></div>
 
-<!-- ============================================================
-   GASTOS FIJOS
-============================================================ -->
-<div id="viewFijos" class="view">
-<header>
-    <h1>Gastos Fijos</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
-</header>
-<div class="card-list" id="listaFijos"></div>
-</div>
+<h3 style="padding-left:20px; margin-top:20px;">Deudas y Plazos</h3>
+<div class="card" id="debtsList"></div>
+</section>
 
-<!-- ============================================================
-   DEUDAS
-============================================================ -->
-<div id="viewDeudas" class="view">
-<header>
-    <h1>Deudas</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
-</header>
-<div class="card-list" id="listaDeudas"></div>
-</div>
-
-<!-- ============================================================
-   HISTORIAL
-============================================================ -->
-<div id="viewHistorial" class="view">
+<!-- ===================================== -->
+<!--               📜 HISTORIAL            -->
+<!-- ===================================== -->
+<section id="view-history" style="display:none;">
 <header>
     <h1>Historial</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+    <button onclick="clearHistory()" style="color:var(--neon); background:none; border:none;">Borrar</button>
 </header>
-<div class="card-list" id="listaHistorial"></div>
-</div>
+<div class="card" id="transactionList"></div>
+</section>
 
-<!-- ============================================================
-   GRÁFICA MENSUAL
-============================================================ -->
-<div id="viewGrafica" class="view">
-<header>
-    <h1>Gráfica Mensual</h1>
-    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
-</header>
+<!-- ===================================== -->
+<!--                 ➕ FAB                 -->
+<!-- ===================================== -->
+<button class="fab" onclick="openAddModal()">+</button>
 
-<div id="graficaContainer">
-    <canvas id="graficaCanvas"></canvas>
-</div>
+<!-- ===================================== -->
+<!--              MODAL NUEVO              -->
+<!-- ===================================== -->
+<div class="modal-overlay" id="addModal">
+    <div class="modal">
 
-</div>
+        <h2 style="text-align:center;">Nuevo Registro</h2>
 
-</div> <!-- /container -->
+        <div class="tabs">
+            <div class="tab active" onclick="setTab('expense', this)">Gasto</div>
+            <div class="tab" onclick="setTab('debt', this)">Deuda</div>
+            <div class="tab" onclick="setTab('fixed', this)">Fijo</div>
+        </div>
 
-<!-- ============================================================
-   FAB EXPANDIBLE
-============================================================ -->
-<div class="fab-container">
-    <div id="fabGroup" class="fab-group">
-        <div class="fab-small" onclick="openModal('ingreso')">💰 Registrar Ingreso</div>
-        <div class="fab-small" onclick="openModal('gasto')">➕ Registrar Gasto</div>
-        <div class="fab-small" onclick="openModal('fijo')">💳 Gasto Fijo</div>
-        <div class="fab-small" onclick="openModal('deuda')">📅 Nueva Deuda</div>
-    </div>
-    <button class="fab-main" onclick="toggleFAB()">+</button>
-</div>
+        <!-- FORMULARIOS -->
+        <div id="form-expense">
+            <input id="exDesc" class="input" type="text" placeholder="Concepto">
+            <input id="exAmount" class="input" type="number" placeholder="Monto">
+            <button class="btn-neon" onclick="addTransaction()">Registrar</button>
+        </div>
 
+        <div id="form-debt" style="display:none;">
+            <input id="debtName" class="input" type="text" placeholder="Artículo">
+            <input id="debtTotal" class="input" type="number" placeholder="Valor total">
+            <input id="debtMonths" class="input" type="number" placeholder="Meses">
+            <input id="debtStart" class="input" type="date">
+            <input id="debtPaid" class="input" type="number" value="0">
+            <button class="btn-neon" onclick="addDebt()">Guardar Deuda</button>
+        </div>
 
-<!-- ============================================================
-   MODAL GENERAL
-============================================================ -->
-<div class="modal-overlay" id="modalOverlay">
-    <div class="modal-box">
-        <h2 id="modalTitle">Nuevo Registro</h2>
+        <div id="form-fixed" style="display:none;">
+            <input id="fixName" class="input" type="text" placeholder="Nombre">
+            <input id="fixAmount" class="input" type="number" placeholder="Monto mensual">
+            <input id="fixDay" class="input" type="number" placeholder="Día límite">
+            <button class="btn-neon" onclick="addFixed()">Guardar Fijo</button>
+        </div>
 
-        <label class="form-label">Descripción</label>
-        <input type="text" id="desc" class="form-input">
-
-        <label class="form-label">Monto ($)</label>
-        <input type="number" id="amount" class="form-input">
-
-        <label id="extraLabel" class="form-label" style="display:none;">Meses / Día</label>
-        <input id="extraInput" class="form-input" type="number" style="display:none;">
-
-        <button class="btn-primary" onclick="saveEntry()">Guardar</button>
-        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+        <button onclick="closeModal('addModal')" style="margin-top:20px; background:none; border:none; color:#777;">Cancelar</button>
     </div>
 </div>
 
-<!-- ============================================================
-   MODAL SALARIO
-============================================================ -->
-<div class="modal-overlay" id="modalSalary">
-    <div class="salary-modal">
-        <h3>Confirmar pago de salario</h3>
-        <p id="salaryText"></p>
-
-        <input id="salaryCorrected" type="number" placeholder="Modificar monto (si hubo descuento)">
-
-        <button style="background:var(--purple);" onclick="confirmSalary()">Confirmar</button>
-        <button style="background:#333;color:#999;" onclick="closeSalaryModal()">Cancelar</button>
+<!-- ===================================== -->
+<!--           ⚙️ MODAL CONFIG              -->
+<!-- ===================================== -->
+<div class="modal-overlay" id="configModal">
+    <div class="modal">
+        <h2>Configurar Salario</h2>
+        <input id="confNominal" class="input" type="number" placeholder="Salario bruto">
+        <input id="confManual" class="input" type="number" placeholder="Corrección manual">
+        <button class="btn-neon" onclick="saveSalaryConfig()">Guardar</button>
+        <button onclick="closeModal('configModal')" style="background:none; border:none; margin-top:20px; color:#777;">Cerrar</button>
     </div>
 </div>
 
-<!-- ============================================================
-   NOTIFICACIÓN
-============================================================ -->
-<div id="toast" class="toast"></div>
-
-
-<!-- ============================================================
-   SCRIPTS
-============================================================ -->
-
+<!-- ===================================== -->
+<!--             JS OPTIMIZADO             -->
+<!-- ===================================== -->
 <script>
 
-/* ============================================================
-   ESTADO GLOBAL
-============================================================ */
 let data = {
-    balance: 0,
-    ingresos: [],
-    gastos: [],
-    fijos: [],
-    deudas: [],
-    movimientos: [],
-    salariosPagados: {}
+    salaryBruto:0,
+    salaryManual:0,
+    balance:0,
+    expenses:[],
+    debts:[],
+    transactions:[]
 };
 
-let currentType = "gasto";
-let salarioPendiente = null;
-
-/* ============================================================
-   LOCAL STORAGE
-============================================================ */
-function saveData() {
-    localStorage.setItem("finanzasSV_full", JSON.stringify(data));
-}
-function loadData() {
-    let stored = localStorage.getItem("finanzasSV_full");
-    if (stored) data = JSON.parse(stored);
-}
-loadData();
-
-/* ============================================================
-   CAMBIO DE VISTA
-============================================================ */
-function openView(id) {
-    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-    renderAll();
+if(localStorage.getItem("finred")){
+    data = JSON.parse(localStorage.getItem("finred"));
 }
 
-/* ============================================================
-   MODO OSCURO / CLARO
-============================================================ */
-function toggleTheme() {
-    document.getElementById("appBody").classList.toggle("light");
-    showToast("Modo cambiado");
+init();
+
+/* ========================== */
+/*      FUNCIONES BASE        */
+/* ========================== */
+function init(){
+    updateDashboard();
+    renderHistory();
 }
 
-/* ============================================================
-   FAB
-============================================================ */
-function toggleFAB() {
-    document.getElementById("fabGroup").classList.toggle("show");
+function save(){
+    localStorage.setItem("finred", JSON.stringify(data));
 }
 
-/* ============================================================
-   MODALES
-============================================================ */
-function openModal(type) {
-    currentType = type;
-    document.getElementById("modalOverlay").classList.add("open");
-
-    const title = document.getElementById("modalTitle");
-    const extraLabel = document.getElementById("extraLabel");
-    const extraInput = document.getElementById("extraInput");
-
-    extraLabel.style.display = "none";
-    extraInput.style.display = "none";
-
-    if (type === "ingreso") title.innerText = "Registrar Ingreso";
-    if (type === "gasto") title.innerText = "Registrar Gasto";
-
-    if (type === "fijo") {
-        title.innerText = "Registrar Gasto Fijo";
-        extraLabel.style.display = "block";
-        extraInput.style.display = "block";
-        extraLabel.innerText = "Día (1-30)";
+/* ========================== */
+/*     SALARIO Y DISPLAY      */
+/* ========================== */
+function getSalary(){
+    if(data.salaryManual>0){
+        return {liq:data.salaryManual};
     }
-    if (type === "deuda") {
-        title.innerText = "Registrar Deuda";
-        extraLabel.style.display = "block";
-        extraInput.style.display = "block";
-        extraLabel.innerText = "Meses a pagar";
+    const n = data.salaryBruto;
+    const isss = Math.min(n,1000)*0.03;
+    const afp = n*0.0725;
+    let renta=0;
+    const t = n - isss - afp;
+    if(t>472 && t<=895.24) renta=((t-472)*0.1)+17.67;
+    else if(t>895.24 && t<=2038.10) renta=((t-895.24)*0.2)+60;
+    else if(t>2038.10) renta=((t-2038.10)*0.3)+288.57;
+    return {liq:t-renta};
+}
+
+function updateDashboard(){
+    document.getElementById("displayBalance").innerText = "$"+data.balance.toFixed(2);
+    renderSuggestions();
+    renderDebts();
+}
+
+/* ========================== */
+/*       GASTOS FIJOS         */
+/* ========================== */
+function renderSuggestions(){
+    let cont = document.getElementById("suggestionList");
+    cont.innerHTML = "";
+    if(data.expenses.length===0){
+        cont.innerHTML="<div style='text-align:center;color:#666;'>Sin gastos fijos.</div>";
+        return;
     }
+    data.expenses.forEach(e=>{
+        let div=document.createElement("div");
+        div.className="list-item";
+        div.innerHTML=`<div><strong>${e.name}</strong><br><small style='color:#777;'>Día ${e.day}</small></div>
+                       <div class="item-amount" style="color:var(--neon);">$${e.amount.toFixed(2)}</div>`;
+        cont.appendChild(div);
+    });
 }
-function closeModal() {
-    document.getElementById("modalOverlay").classList.remove("open");
-}
 
-/* ============================================================
-   SALARIO AUTOMÁTICO
-============================================================ */
-function calcularSalarioQuincenal() {
-    const bruto = 580;
-
-    const quincena = bruto / 2;
-    const isss = (bruto * 0.03) / 2;
-    const afp = (bruto * 0.0725) / 2;
-
-    const gravada = quincena - isss - afp;
-
-    let renta = 0;
-    if (gravada > 700 && gravada <= 1483.33) {
-        renta = ((gravada - 700) * 0.10) + 8.83;
-    } else if (gravada > 1483.33) {
-        renta = ((gravada - 1483.33) * 0.20) + 66.28;
+/* ========================== */
+/*           DEUDAS           */
+/* ========================== */
+function renderDebts(){
+    let cont=document.getElementById("debtsList");
+    cont.innerHTML="";
+    if(data.debts.length===0){
+        cont.innerHTML="<div style='text-align:center;color:#666;'>No hay deudas activas.</div>";
+        return;
     }
+    data.debts.forEach((d,i)=>{
+        const cuota=d.total/d.months;
+        const prog=(d.paid/d.months)*100;
 
-    return (quincena - isss - afp - renta).toFixed(2);
+        let div=document.createElement("div");
+        div.className="list-item";
+        div.style.flexDirection="column";
+        div.style.alignItems="flex-start";
+
+        div.innerHTML=`
+            <div style="width:100%; display:flex; justify-content:space-between;">
+                <strong>${d.name}</strong>
+                <button onclick="payInstallment(${i})" style="background:none;border:none;color:var(--neon);font-size:.9rem;">Pagar</button>
+            </div>
+
+            <small style="color:#777;">${d.paid}/${d.months} cuotas</small>
+
+            <div class="progress"><div style="width:${prog}%"></div></div>
+
+            <small style="color:#999;">Cuota: $${cuota.toFixed(2)}</small>
+        `;
+
+        cont.appendChild(div);
+    });
 }
 
-function esAsueto(f) {
-    const fechas = ["1-1","5-1","5-10","6-22","8-6","9-15","11-1","12-25"];
-    const key = (f.getMonth()+1) + "-" + f.getDate();
-    return fechas.includes(key);
-}
+/* ========================== */
+/*         GASTO NORMAL       */
+/* ========================== */
+function addTransaction(){
+    let d=document.getElementById("exDesc").value;
+    let a=parseFloat(document.getElementById("exAmount").value);
+    if(!d||!a) return;
 
-function fechaPago(tipo) {
-    const hoy = new Date();
-    const y = hoy.getFullYear();
-    const m = hoy.getMonth() + 1;
-
-    let f = tipo === "q1"
-        ? new Date(`${y}-${m}-15`)
-        : new Date(y, m, 0);
-
-    if (f.getDay() === 0) f.setDate(f.getDate() - 1);
-    if (esAsueto(f)) f.setDate(f.getDate() - 1);
-
-    return f;
-}
-
-function revisarSalario() {
-    const hoy = new Date();
-    const pago1 = fechaPago("q1");
-    const pago2 = fechaPago("q2");
-
-    const k1 = `${pago1.getFullYear()}-${pago1.getMonth()+1}-Q1`;
-    const k2 = `${pago2.getFullYear()}-${pago2.getMonth()+1}-Q2`;
-
-    if (hoy >= pago1 && !data.salariosPagados[k1]) {
-        salarioPendiente = { llave:k1, fecha:pago1, monto:calcularSalarioQuincenal() };
-        abrirModalSalario();
-    }
-    if (hoy >= pago2 && !data.salariosPagados[k2]) {
-        salarioPendiente = { llave:k2, fecha:pago2, monto:calcularSalarioQuincenal() };
-        abrirModalSalario();
-    }
-}
-
-function abrirModalSalario() {
-    document.getElementById("salaryText").innerText =
-        `Pago de salario detectado: $${salarioPendiente.monto}`;
-    document.getElementById("modalSalary").classList.add("open");
-}
-
-function closeSalaryModal() {
-    document.getElementById("modalSalary").classList.remove("open");
-}
-
-function confirmSalary() {
-    const input = document.getElementById("salaryCorrected").value;
-    const monto = parseFloat(input) || parseFloat(salarioPendiente.monto);
-
-    data.balance += monto;
-
-    data.ingresos.unshift({
-        desc:"Pago de salario",
-        amount:monto,
+    data.balance -= a;
+    data.transactions.unshift({
+        desc:d,
+        amount:-a,
         date:new Date().toLocaleDateString()
     });
 
-    data.movimientos.unshift({
-        desc:"Pago de salario",
-        amount:monto,
-        type:"ingreso",
+    save();
+    closeModal("addModal");
+    init();
+}
+
+/* ========================== */
+/*           DEUDAS           */
+/* ========================== */
+function addDebt(){
+    const n=document.getElementById("debtName").value;
+    const t=parseFloat(document.getElementById("debtTotal").value);
+    const m=parseInt(document.getElementById("debtMonths").value);
+    const s=document.getElementById("debtStart").value;
+    const p=parseInt(document.getElementById("debtPaid").value)||0;
+
+    if(!n||!t||!m||!s) return;
+
+    data.debts.push({name:n,total:t,months:m,startDate:s,paid:p});
+    save();
+    closeModal("addModal");
+    init();
+}
+
+function payInstallment(i){
+    let d=data.debts[i];
+    const cuota=d.total/d.months;
+    if(d.paid>=d.months) return alert("Deuda ya finalizada.");
+
+    d.paid++;
+    data.balance -= cuota;
+
+    data.transactions.unshift({
+        desc:"Cuota "+d.name,
+        amount:-cuota,
         date:new Date().toLocaleDateString()
     });
 
-    data.salariosPagados[salarioPendiente.llave] = true;
-
-    saveData();
-    closeSalaryModal();
-    renderAll();
-    showToast("Salario registrado");
+    save();
+    init();
 }
 
-/* ============================================================
-   GUARDAR REGISTRO
-============================================================ */
-function saveEntry() {
-    const desc = document.getElementById("desc").value;
-    const amount = parseFloat(document.getElementById("amount").value);
-    const extra = parseFloat(document.getElementById("extraInput").value);
-    const fecha = new Date().toLocaleDateString();
+/* ========================== */
+/*        GASTO FIJO          */
+/* ========================== */
+function addFixed(){
+    const n=document.getElementById("fixName").value;
+    const a=parseFloat(document.getElementById("fixAmount").value);
+    const d=parseInt(document.getElementById("fixDay").value);
+    if(!n||!a||!d) return;
 
-    if (!desc || !amount) return showToast("Completa los campos");
+    data.expenses.push({name:n,amount:a,day:d});
+    save();
+    closeModal("addModal");
+    init();
+}
 
-    if (currentType === "ingreso") {
-        data.balance += amount;
-        data.ingresos.unshift({ desc, amount, date:fecha });
-    } else if (currentType === "gasto") {
-        data.balance -= amount;
-        data.gastos.unshift({ desc, amount, date:fecha });
-    } else if (currentType === "fijo") {
-        data.balance -= amount;
-        data.fijos.unshift({ desc, amount, dia:extra, date:fecha });
-    } else if (currentType === "deuda") {
-        data.balance -= amount;
-        data.deudas.unshift({
-            desc, amount,
-            meses:extra, pagado:0,
-            date:fecha
-        });
+/* ========================== */
+/*         HISTORIAL          */
+/* ========================== */
+function renderHistory(){
+    const cont=document.getElementById("transactionList");
+    cont.innerHTML="";
+    if(data.transactions.length===0){
+        cont.innerHTML="<div style='text-align:center;color:#666;'>Sin movimientos.</div>";
+        return;
     }
-
-    data.movimientos.unshift({
-        desc,
-        amount: currentType === "ingreso" ? amount : -amount,
-        type: currentType,
-        date: fecha
-    });
-
-    saveData();
-    closeModal();
-    renderAll();
-    showToast("Guardado");
-}
-
-/* ============================================================
-   TOAST
-============================================================ */
-let toastTimer;
-function showToast(msg) {
-    const t = document.getElementById("toast");
-    t.innerText = msg;
-    t.classList.add("show");
-
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(()=>{
-        t.classList.remove("show");
-    }, 2500);
-}
-
-/* ============================================================
-   RENDER GENERAL
-============================================================ */
-function renderAll() {
-    document.getElementById("mainBalance").innerText = "$" + data.balance.toFixed(2);
-
-    renderList("recentList", data.movimientos);
-    renderList("listaIngresos", data.ingresos);
-    renderList("listaGastos", data.gastos);
-    renderList("listaFijos", data.fijos);
-    renderList("listaHistorial", data.movimientos);
-
-    renderDeudas();
-    saveData();
-}
-
-/* ============================================================
-   RENDER LISTA
-============================================================ */
-function renderList(id, arr) {
-    const box = document.getElementById(id);
-    box.innerHTML = "";
-
-    arr.forEach(m => {
-        box.innerHTML += `
-            <div class="list-item">
-                <div class="item-left">
-                    <h4>${m.desc}</h4>
-                    <p>${m.date}</p>
-                </div>
-                <div class="item-right ${m.amount > 0 ? 'amount-ingreso' : 'amount-egreso'}">
-                    ${m.amount > 0 ? '+' : '-'}$${Math.abs(m.amount)}
-                </div>
+    data.transactions.forEach(t=>{
+        let div=document.createElement("div");
+        div.className="list-item";
+        div.innerHTML=`
+            <div>
+                <strong>${t.desc}</strong><br>
+                <small style="color:#777;">${t.date}</small>
+            </div>
+            <div style="color:${t.amount<0?'var(--neon)':'#0f0'}; font-weight:bold;">
+                ${t.amount.toFixed(2)}
             </div>
         `;
+        cont.appendChild(div);
     });
 }
-
-/* ============================================================
-   RENDER DEUDAS
-============================================================ */
-function renderDeudas() {
-    const box = document.getElementById("listaDeudas");
-    box.innerHTML = "";
-
-    data.deudas.forEach(d => {
-        const p = (d.pagado / d.meses) * 100;
-        box.innerHTML += `
-            <div class="list-item">
-                <div class="item-left">
-                    <h4>${d.desc}</h4>
-                    <p>${d.pagado}/${d.meses} cuotas</p>
-                    <div class="deuda-progress">
-                        <div class="deuda-bar" style="width:${p}%"></div>
-                    </div>
-                </div>
-                <div class="item-right amount-egreso">-$${d.amount}</div>
-            </div>
-        `;
-    });
+function clearHistory(){
+    if(confirm("¿Limpiar historial?")){
+        data.transactions=[];
+        data.balance=0;
+        save();
+        init();
+    }
 }
 
-/* ============================================================
-   GRÁFICA
-============================================================ */
-let grafica = null;
-
-function cargarGrafica() {
-
-    let ingresosMes = 0;
-    let gastosMes = 0;
-
-    const mesActual = new Date().getMonth() + 1;
-
-    data.ingresos.forEach(i => {
-        const m = parseInt(i.date.split("/")[1]);
-        if (m === mesActual) ingresosMes += Number(i.amount);
-    });
-
-    data.gastos.forEach(g => {
-        const m = parseInt(g.date.split("/")[1]);
-        if (m === mesActual) gastosMes += Number(g.amount);
-    });
-
-    const ctx = document.getElementById("graficaCanvas").getContext("2d");
-
-    if (grafica) grafica.destroy();
-
-    grafica = new Chart(ctx, {
-        type:"bar",
-        data:{
-            labels:["Ingresos","Gastos"],
-            datasets:[{
-                label:"Monto",
-                data:[ingresosMes, gastosMes],
-                backgroundColor:[
-                    "rgba(162,89,255,0.75)",
-                    "rgba(255,83,119,0.75)"
-                ],
-                borderRadius:10
-            }]
-        },
-        options:{
-            scales:{ y:{ beginAtZero:true } },
-            responsive:true
-        }
-    });
+/* ========================== */
+/*           MODALES          */
+/* ========================== */
+function openAddModal(){ document.getElementById("addModal").classList.add("open"); }
+function closeModal(id){ document.getElementById(id).classList.remove("open"); }
+function openConfig(){
+    document.getElementById("confNominal").value=data.salaryBruto;
+    document.getElementById("confManual").value=data.salaryManual;
+    document.getElementById("configModal").classList.add("open");
 }
 
-document.getElementById("viewGrafica").addEventListener("click", cargarGrafica);
+/* ========================== */
+/*             TABS           */
+/* ========================== */
+function setTab(t,el){
+    document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+    el.classList.add("active");
 
-/* ============================================================
-   INICIO
-============================================================ */
-function iniciar() {
-    renderAll();
-    revisarSalario();
+    document.getElementById("form-expense").style.display="none";
+    document.getElementById("form-debt").style.display="none";
+    document.getElementById("form-fixed").style.display="none";
+
+    document.getElementById("form-"+t).style.display="block";
 }
-iniciar();
 
+/* ========================== */
+/*          NAVEGACIÓN        */
+/* ========================== */
+function switchView(view){
+    document.getElementById("view-dash").style.display="none";
+    document.getElementById("view-history").style.display="none";
+
+    document.getElementById("view-"+view).style.display="block";
+}
+
+/* ========================== */
+/*         SALARIO SAVE       */
+/* ========================== */
+function saveSalaryConfig(){
+    let n=parseFloat(document.getElementById("confNominal").value);
+    let m=parseFloat(document.getElementById("confManual").value);
+
+    if(n) data.salaryBruto=n;
+    data.salaryManual=m||0;
+
+    save();
+    closeModal("configModal");
+    updateDashboard();
+}
 </script>
-
-<!-- LIBRERÍAS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </body>
 </html>
