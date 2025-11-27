@@ -3,610 +3,407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Black Premium Finance</title>
-
+<title>Finanzas Black Premium</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
-/* ============================================================
-   BLACK PREMIUM + GOLD ELEGANT (Opción 1)
-   ============================================================ */
-
-:root {
-    --bg: #0A0A0A;
-    --card-bg: #0F0F0F;
-    --soft-black: #111;
-    --gold: #D4AF37;
-    --gold-soft: #c9a33a;
-    --white: #fff;
-    --gray: #aaa;
-    --danger: #ff4d4d;
-    --success: #4dff88;
-    --radius: 18px;
-    --shadow: 0 0 20px rgba(212,175,55,0.15);
-    font-family: 'Inter', sans-serif;
+:root{
+  --bg:#0b0c10;
+  --card:#121317;
+  --blue:#4a8cff;
+  --text:#e5e7eb;
+  --muted:#9ca3af;
+  --radius:18px;
+  --shadow:0 0 20px rgba(74,140,255,.2);
+  font-family:"Inter",-apple-system,system-ui,sans-serif;
 }
-
-body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--white);
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  min-height:100vh;
 }
-
-/* ============================================================
-   TOP TITLE
-   ============================================================ */
-.header {
-    padding: 25px 20px;
-    font-size: 1.4rem;
-    font-weight: 600;
-    background: #0B0B0B;
-    text-align: center;
-    letter-spacing: 1px;
-    border-bottom: 1px solid #222;
+.container{
+  width:100%;
+  max-width:420px;
+  padding-bottom:90px;
 }
-
-/* ============================================================
-   TARJETA BLACK GOLD
-   ============================================================ */
-.card-black {
-    background: linear-gradient(145deg, #000 0%, #111 70%);
-    border-radius: 20px;
-    padding: 22px;
-    margin: 20px;
-    box-shadow: 0 0 30px rgba(212,175,55,0.25);
-    position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(212,175,55,0.25);
+h1,h2,h3{margin:0;color:var(--blue);}
+.card{
+  background:var(--card);
+  margin:15px 20px;
+  padding:18px;
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
 }
-
-.card-black::after {
-    content: "";
-    position: absolute;
-    top: -40%;
-    right: -20%;
-    width: 240px;
-    height: 240px;
-    background: radial-gradient(circle, rgba(212,175,55,0.4) 0%, transparent 70%);
-    filter: blur(30px);
+.stat{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
 }
-
-.card-black h2 {
-    color: var(--gold);
-    font-size: 1.3rem;
-    font-weight: 600;
+.btn{
+  width:100%;
+  background:var(--blue);
+  border:none;
+  padding:14px;
+  border-radius:12px;
+  color:white;
+  font-weight:600;
+  margin-top:10px;
+  cursor:pointer;
 }
-
-/* ============================================================
-   BUTTONS
-   ============================================================ */
-.btn {
-    padding: 13px 18px;
-    background: var(--gold);
-    color: var(--black);
-    border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
+.btn:active{transform:scale(.98);}
+input{
+  width:100%;
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  margin-top:6px;
+  background:#1a1b1f;
+  color:white;
 }
-
-.btn:hover {
-    background: var(--gold-soft);
+label{color:var(--muted);font-size:.9rem;}
+.bottom-nav{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  background:#0d0e12;
+  border-top:1px solid #1e1f24;
+  display:flex;
+  justify-content:space-around;
+  padding:10px 0;
+  z-index:10;
 }
-
-/* buttons dark */
-.btn-dark {
-    padding: 12px 18px;
-    background: #000;
-    border: 1px solid var(--gold);
-    color: var(--gold);
-    border-radius: 12px;
-    width: 100%;
-    cursor: pointer;
+.bottom-nav button{
+  background:none;
+  border:none;
+  color:var(--muted);
+  font-size:.8rem;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
 }
-
-.section {
-    display: none;
-    padding-bottom: 100px;
-}
-
-.section.active {
-    display: block;
-}
-
-.input-group {
-    margin: 12px 20px;
-    display: flex;
-    flex-direction: column;
-}
-
-.input-group label {
-    color: var(--gold);
-    font-weight: 600;
-    margin-bottom: 4px;
-}
-
-.input-group input {
-    background: #111;
-    border: 1px solid #333;
-    padding: 12px;
-    border-radius: 10px;
-    color: var(--white);
-}
-
-.list-item {
-    padding: 15px 20px;
-    border-bottom: 1px solid #222;
-}
-
-.gold {
-    color: var(--gold);
-}
-
-/* ============================================================
-   PROGRESS BAR BLACK-GOLD
-   ============================================================ */
-.progress-container {
-    background: #222;
-    border-radius: 10px;
-    height: 10px;
-    margin: 15px 0;
-    overflow: hidden;
-}
-
-.progress {
-    background: var(--gold);
-    width: 0%;
-    height: 100%;
-    transition: width .4s;
-}
-
-/* ============================================================
-   BOTTOM MENU / NAVIGATION
-   ============================================================ */
-.bottom-nav {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #0B0B0B;
-    border-top: 1px solid #222;
-    display: flex;
-    justify-content: space-around;
-    padding: 10px 0;
-}
-
-.bottom-nav button {
-    background: transparent;
-    border: none;
-    color: var(--gray);
-    font-size: .85rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.bottom-nav button.active {
-    color: var(--gold);
-}
-
-.icon {
-    font-size: 1.4rem;
-    margin-bottom: 3px;
-}
-
-/* ============================================================
-   TITLES IN SECTIONS
-   ============================================================ */
-.section-title {
-    margin: 20px;
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--gold);
-}
+.bottom-nav button.active{color:var(--blue);}
+.icon{font-size:1.4rem;}
+.section{display:none;}
+.section.active{display:block;}
+.chart-container{position:relative;height:200px;width:100%;}
+.list-item{border-bottom:1px solid #1f2025;padding:10px 0;}
+.gold{color:var(--blue);}
 </style>
 </head>
 <body>
+<div class="container">
+  <section id="home" class="section active">
+    <div class="card">
+      <h2>Resumen General</h2>
+      <canvas id="grafico"></canvas>
+      <div class="stat"><span>Saldo Actual</span><strong id="saldo">$0.00</strong></div>
+      <div class="stat"><span>Ingresos del Mes</span><strong id="ingresosMes">$0.00</strong></div>
+      <div class="stat"><span>Gastos del Mes</span><strong id="gastosMes">$0.00</strong></div>
+    </div>
+    <div class="card">
+      <h2>Deudas Activas</h2>
+      <div id="listaDeudas"></div>
+    </div>
+  </section>
 
-<div class="header">BLACK PREMIUM FINANCE</div>
+  <section id="ingresos" class="section">
+    <div class="card">
+      <h2>Registrar Ingreso</h2>
+      <label>Monto</label><input type="number" id="montoIngreso">
+      <label>Descripción</label><input type="text" id="descIngreso">
+      <button class="btn" onclick="agregarIngreso()">Guardar</button>
+    </div>
+    <div class="card">
+      <h2>Historial</h2>
+      <div id="historialIngresos"></div>
+    </div>
+  </section>
 
-<!-- ============================================================
-     PANTALLA 1 — HOME / DASHBOARD
-============================================================ -->
-<div id="home" class="section active">
+  <section id="gastos" class="section">
+    <div class="card">
+      <h2>Registrar Gasto</h2>
+      <label>Monto</label><input type="number" id="montoGasto">
+      <label>Descripción</label><input type="text" id="descGasto">
+      <button class="btn" onclick="agregarGasto()">Guardar</button>
+    </div>
+    <div class="card">
+      <h2>Historial</h2>
+      <div id="historialGastos"></div>
+    </div>
+  </section>
 
-    <h2 class="section-title">Mis Deudas Activas</h2>
-    <div id="listaDeudas"></div>
+  <section id="deudas" class="section">
+    <div class="card">
+      <h2>Agregar Deuda</h2>
+      <label>Nombre</label><input id="nombreDeuda">
+      <label>Monto Total</label><input id="montoDeuda" type="number">
+      <label>Meses</label><input id="mesesDeuda" type="number">
+      <button class="btn" onclick="agregarDeuda()">Guardar</button>
+    </div>
+    <div class="card">
+      <h2>Deudas</h2>
+      <div id="listaDeudasDet"></div>
+    </div>
+  </section>
 
-    <h2 class="section-title">Próximo Pago</h2>
-    <div id="proximoPago" class="list-item gold"></div>
-
+  <section id="config" class="section">
+    <div class="card">
+      <h2>Configuración</h2>
+      <label>Salario Mensual</label>
+      <input id="salario" type="number">
+      <button class="btn" onclick="guardarSalario()">Guardar</button>
+      <button class="btn" style="background:#1a1b1f;margin-top:10px" onclick="resetDatos()">Resetear</button>
+    </div>
+  </section>
 </div>
 
-<!-- ============================================================
-     PANTALLA 2 — NUEVA COMPRA
-============================================================ -->
-<div id="nueva" class="section">
-
-    <h2 class="section-title">Registrar Compra</h2>
-
-    <div class="input-group">
-        <label>Nombre de la Tarjeta</label>
-        <input id="tarjetaNombre" type="text">
-    </div>
-
-    <div class="input-group">
-        <label>Monto de la Compra</label>
-        <input id="montoCompra" type="number">
-    </div>
-
-    <div class="input-group">
-        <label>Número de Meses</label>
-        <input id="meses" type="number">
-    </div>
-
-    <div class="input-group">
-        <label>Fecha de Compra</label>
-        <input id="fechaCompra" type="date">
-    </div>
-
-    <button class="btn" onclick="registrarCompra()">Guardar Compra</button>
-</div>
-
-<!-- ============================================================
-     PANTALLA 3 — ABONOS
-============================================================ -->
-<div id="abonos" class="section">
-    <h2 class="section-title">Abonar a una Deuda</h2>
-
-    <div id="listaAbonos"></div>
-</div>
-
-<!-- ============================================================
-     PANTALLA 4 — CONFIG
-============================================================ -->
-<div id="config" class="section">
-    <h2 class="section-title">Configuración</h2>
-
-    <div class="input-group">
-        <label>Salario Mensual</label>
-        <input id="salario" type="number">
-    </div>
-
-    <button class="btn" onclick="guardarSalario()">Guardar Salario</button>
-
-    <h2 class="section-title">Resetear</h2>
-    <button class="btn-dark" onclick="resetDatos()">Borrar Todo</button>
-</div>
-
-<!-- ============================================================
-     MENÚ INFERIOR
-============================================================ -->
 <div class="bottom-nav">
-    <button onclick="show('home', this)" class="active"><span class="icon">🏠</span>Inicio</button>
-    <button onclick="show('nueva', this)"><span class="icon">➕</span>Nueva</button>
-    <button onclick="show('abonos', this)"><span class="icon">💰</span>Abonos</button>
-    <button onclick="show('config', this)"><span class="icon">⚙️</span>Config</button>
+  <button class="active" onclick="show('home',this)"><span class="icon">🏠</span>Inicio</button>
+  <button onclick="show('ingresos',this)"><span class="icon">💵</span>Ingresos</button>
+  <button onclick="show('gastos',this)"><span class="icon">💸</span>Gastos</button>
+  <button onclick="show('deudas',this)"><span class="icon">💳</span>Deudas</button>
+  <button onclick="show('config',this)"><span class="icon">⚙️</span>Config</button>
 </div>
 
 <script>
-function show(id, btn) {
-    document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-
-    document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
+function show(id,btn){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('.bottom-nav button').forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active');
 }
 /* ============================================================
-   BLOQUE 2/3 — SISTEMA DE COMPRAS, CUOTAS Y PANTALLAS
+   BLOQUE 2/3 — DASHBOARD + GRAFICA + INGRESOS/GASTOS
    ============================================================ */
 
-let compras = JSON.parse(localStorage.getItem("compras")) || [];
+let ingresos = JSON.parse(localStorage.getItem("ingresos")) || [];
+let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
+let deudas = JSON.parse(localStorage.getItem("deudas")) || [];
 let salarioMensual = JSON.parse(localStorage.getItem("salarioMensual")) || 0;
 
-/* ============================================================
-   FUNCIÓN: Registrar compra nueva
-   ============================================================ */
-function registrarCompra() {
-    const nombre = document.getElementById("tarjetaNombre").value;
-    const monto = parseFloat(document.getElementById("montoCompra").value);
-    const meses = parseInt(document.getElementById("meses").value);
-    const fecha = document.getElementById("fechaCompra").value;
-
-    if (!nombre || !monto || !meses || !fecha) {
-        alert("Completa todos los campos.");
-        return;
+// ---------- Chart.js setup ----------
+let ctx = document.getElementById('grafico').getContext('2d');
+let grafico = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Ingresos', 'Gastos'],
+    datasets: [{
+      label: 'Resumen',
+      data: [0, 0],
+      backgroundColor: ['#4a8cff', '#1e293b']
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { beginAtZero: true, ticks: { color: '#9ca3af' }, grid: { color: '#1e1f24' } },
+      x: { ticks: { color: '#9ca3af' }, grid: { color: '#1e1f24' } }
     }
-
-    const cuota = monto / meses;
-
-    const obj = {
-        id: Date.now(),
-        nombre,
-        monto,
-        meses,
-        fecha,
-        cuota,
-        abonosExtra: [],
-    };
-
-    compras.push(obj);
-    localStorage.setItem("compras", JSON.stringify(compras));
-
-    document.getElementById("tarjetaNombre").value = "";
-    document.getElementById("montoCompra").value = "";
-    document.getElementById("meses").value = "";
-    document.getElementById("fechaCompra").value = "";
-
-    renderDeudas();
-    renderAbonos();
-    calcularProximoPago();
-
-    alert("Compra registrada.");
-}
-
-/* ============================================================
-   FUNCIONES DE CÁLCULO
-   ============================================================ */
-function mesesPagados(compra) {
-    const fechaCompra = new Date(compra.fecha);
-    const hoy = new Date();
-
-    let diff =
-        (hoy.getFullYear() - fechaCompra.getFullYear()) * 12 +
-        (hoy.getMonth() - fechaCompra.getMonth());
-
-    if (diff < 0) diff = 0;
-    if (diff > compra.meses) diff = compra.meses;
-
-    return diff;
-}
-
-function saldoPendiente(compra) {
-    const pag = mesesPagados(compra);
-    const pagado = pag * compra.cuota;
-
-    const abonosExtra = compra.abonosExtra.reduce((s, a) => s + a.monto, 0);
-
-    return compra.monto - pagado - abonosExtra;
-}
-
-function mesesPendientes(compra) {
-    return Math.ceil(saldoPendiente(compra) / compra.cuota);
-}
-
-/* ============================================================
-   RENDER PRINCIPAL — HOME
-   Tarjetas de Deudas Activas en estilo Black Gold
-   ============================================================ */
-function renderDeudas() {
-    const cont = document.getElementById("listaDeudas");
-    cont.innerHTML = "";
-
-    compras.forEach(c => {
-        const pag = mesesPagados(c);
-        const pen = mesesPendientes(c);
-        const pendienteDinero = saldoPendiente(c);
-        const porcentaje = (pag / c.meses) * 100;
-
-        const div = document.createElement("div");
-        div.className = "card-black";
-
-        div.innerHTML = `
-            <h2>${c.nombre}</h2>
-
-            <div style="margin-top:10px;font-size:1.1rem;">
-                <span class="gold">$${c.monto.toFixed(2)}</span> en ${c.meses} meses
-            </div>
-
-            <div style="margin-top:8px;">
-                Pagado: <span class="gold">${pag}</span> / ${c.meses}
-                <br>
-                Pendientes: <span class="gold">${pen}</span>
-            </div>
-
-            <div class="progress-container">
-                <div class="progress" style="width:${porcentaje}%"></div>
-            </div>
-
-            <div style="margin-top:15px;">
-                <strong>Saldo pendiente:</strong> 
-                <span class="gold">$${pendienteDinero.toFixed(2)}</span>
-            </div>
-
-            <button class="btn" style="margin-top:15px;" onclick="abrirAbono(${c.id})">
-                ABONAR
-            </button>
-        `;
-
-        cont.appendChild(div);
-    });
-}
-
-/* ============================================================
-   ABRIR ABONO DESDE TARJETA
-   ============================================================ */
-function abrirAbono(id) {
-    show('abonos', document.querySelectorAll('.bottom-nav button')[2]);
-
-    document.querySelectorAll('.abono-card').forEach(e => e.remove());
-
-    compras.forEach(c => {
-        if (c.id === id) {
-            const cont = document.getElementById("listaAbonos");
-
-            const saldo = saldoPendiente(c);
-
-            const div = document.createElement("div");
-            div.className = "card-black abono-card";
-            div.innerHTML = `
-                <h2>${c.nombre}</h2>
-
-                <div style="margin-top:10px;">Saldo pendiente:
-                    <span class="gold">$${saldo.toFixed(2)}</span>
-                </div>
-
-                <div class="input-group" style="margin-top:15px;">
-                    <label>Monto a abonar</label>
-                    <input id="abonoInput${c.id}" type="number">
-                </div>
-
-                <button class="btn" onclick="registrarAbono(${c.id})">
-                    Registrar Abono
-                </button>
-            `;
-
-            cont.appendChild(div);
-        }
-    });
-}
-
-/* ============================================================
-   REGISTRAR ABONO EXTRA
-   ============================================================ */
-function registrarAbono(id) {
-    const compra = compras.find(c => c.id === id);
-    const campo = document.getElementById(`abonoInput${id}`);
-
-    const monto = parseFloat(campo.value);
-
-    if (!monto || monto <= 0) {
-        alert("Ingresa un monto válido.");
-        return;
-    }
-
-    compra.abonosExtra.push({
-        fecha: new Date().toISOString().split("T")[0],
-        monto
-    });
-
-    localStorage.setItem("compras", JSON.stringify(compras));
-
-    campo.value = "";
-
-    renderDeudas();
-    renderAbonos();
-    calcularProximoPago();
-
-    alert("Abono registrado.");
-}
-
-/* ============================================================
-   LISTADO GENERAL DE ABONOS
-   ============================================================ */
-function renderAbonos() {
-    const cont = document.getElementById("listaAbonos");
-    cont.innerHTML = "";
-
-    compras.forEach(c => {
-        const saldo = saldoPendiente(c);
-
-        const div = document.createElement("div");
-        div.className = "card-black";
-
-        let hist = "";
-        c.abonosExtra.forEach(a => {
-            hist += `<div style="font-size:.9rem;color:#aaa;margin-top:4px;">• ${a.fecha}: $${a.monto.toFixed(2)}</div>`;
-        });
-
-        div.innerHTML = `
-            <h2>${c.nombre}</h2>
-            <div>Saldo pendiente: <span class="gold">$${saldo.toFixed(2)}</span></div>
-
-            <button class="btn" style="margin-top:10px;" onclick="abrirAbono(${c.id})">
-                Abonar
-            </button>
-
-            <div style="margin-top:15px;font-size:1rem;color:${hist ? '#fff':'#777'};">
-                ${hist ? "Historial de abonos:" : "Sin abonos extra aún"}
-                ${hist}
-            </div>
-        `;
-
-        cont.appendChild(div);
-    });
-}
-
-/* ============================================================
-   PRÓXIMO PAGO — Día 16 (o 15 si cae domingo)
-   ============================================================ */
-function calcularProximoPago() {
-    const hoy = new Date();
-    let pago = new Date(hoy.getFullYear(), hoy.getMonth(), 16);
-
-    if (pago.getDay() === 0) pago.setDate(15);
-
-    const fecha =
-        pago.toISOString().split("T")[0];
-
-    const cont = document.getElementById("proximoPago");
-    cont.innerHTML = compras.length === 0
-        ? "No hay pagos próximos."
-        : `📅 ${fecha} — Cuota mensual de cada deuda`;
-}
-
-/* ============================================================
-   RUN AT START
-============================================================ */
-renderDeudas();
-renderAbonos();
-calcularProximoPago();
-/* ============================================================
-   BLOQUE 3/3 — SALARIO + RESET + UTILIDADES + CIERRE
-   ============================================================ */
-
-/* ============================================================
-   SALARIO
-   ============================================================ */
-
-function guardarSalario() {
-    const val = parseFloat(document.getElementById("salario").value);
-
-    if (!val || val <= 0) {
-        alert("Salario inválido.");
-        return;
-    }
-
-    salarioMensual = val;
-    localStorage.setItem("salarioMensual", JSON.stringify(salarioMensual));
-
-    alert("Salario guardado.");
-}
-
-/* ============================================================
-   RESET TOTAL
-   ============================================================ */
-
-function resetDatos() {
-    if (!confirm("¿Seguro que deseas eliminar todos los datos?")) return;
-
-    compras = [];
-    salarioMensual = 0;
-
-    localStorage.removeItem("compras");
-    localStorage.removeItem("salarioMensual");
-
-    renderDeudas();
-    renderAbonos();
-    calcularProximoPago();
-
-    alert("Sistema reiniciado.");
-}
-
-/* ============================================================
-   INICIALIZACIÓN FINAL
-   ============================================================ */
-
-document.addEventListener("DOMContentLoaded", () => {
-    renderDeudas();
-    renderAbonos();
-    calcularProximoPago();
+  }
 });
 
-/* ============================================================
-   CIERRE DEL SCRIPT
-   ============================================================ */
-</script>
+// ============================================================
+// FUNCIONES DE INGRESOS
+// ============================================================
+function agregarIngreso(){
+  const monto = parseFloat(document.getElementById("montoIngreso").value);
+  const desc = document.getElementById("descIngreso").value.trim();
+  if(!monto || monto <= 0 || !desc){alert("Datos inválidos");return;}
+  ingresos.push({id:Date.now(),monto,desc,fecha:new Date().toISOString().split("T")[0]});
+  localStorage.setItem("ingresos",JSON.stringify(ingresos));
+  document.getElementById("montoIngreso").value="";
+  document.getElementById("descIngreso").value="";
+  renderIngresos(); actualizarDashboard();
+}
 
+function renderIngresos(){
+  const div=document.getElementById("historialIngresos");
+  div.innerHTML="";
+  ingresos.slice().reverse().forEach(i=>{
+    const d=document.createElement("div");
+    d.className="list-item";
+    d.innerHTML=`${i.fecha} — <strong>$${i.monto.toFixed(2)}</strong> ${i.desc}`;
+    div.appendChild(d);
+  });
+}
+
+// ============================================================
+// FUNCIONES DE GASTOS
+// ============================================================
+function agregarGasto(){
+  const monto = parseFloat(document.getElementById("montoGasto").value);
+  const desc = document.getElementById("descGasto").value.trim();
+  if(!monto || monto <= 0 || !desc){alert("Datos inválidos");return;}
+  gastos.push({id:Date.now(),monto,desc,fecha:new Date().toISOString().split("T")[0]});
+  localStorage.setItem("gastos",JSON.stringify(gastos));
+  document.getElementById("montoGasto").value="";
+  document.getElementById("descGasto").value="";
+  renderGastos(); actualizarDashboard();
+}
+
+function renderGastos(){
+  const div=document.getElementById("historialGastos");
+  div.innerHTML="";
+  gastos.slice().reverse().forEach(g=>{
+    const d=document.createElement("div");
+    d.className="list-item";
+    d.innerHTML=`${g.fecha} — <strong>$${g.monto.toFixed(2)}</strong> ${g.desc}`;
+    div.appendChild(d);
+  });
+}
+
+// ============================================================
+// DASHBOARD GENERAL
+// ============================================================
+function actualizarDashboard(){
+  const totalIngresos = ingresos.reduce((s,i)=>s+i.monto,0);
+  const totalGastos = gastos.reduce((s,g)=>s+g.monto,0);
+  const saldo = totalIngresos - totalGastos;
+  document.getElementById("saldo").innerText = `$${saldo.toFixed(2)}`;
+  document.getElementById("ingresosMes").innerText = `$${totalIngresos.toFixed(2)}`;
+  document.getElementById("gastosMes").innerText = `$${totalGastos.toFixed(2)}`;
+  grafico.data.datasets[0].data = [totalIngresos, totalGastos];
+  grafico.update();
+  renderDeudasHome();
+}
+
+// ============================================================
+// RENDER DEUDAS EN HOME
+// ============================================================
+function renderDeudasHome(){
+  const cont = document.getElementById("listaDeudas");
+  cont.innerHTML="";
+  if(deudas.length===0){cont.innerHTML="<div class='list-item'>No hay deudas activas</div>";return;}
+  deudas.forEach(d=>{
+    const pagadas = mesesPagados(d);
+    const saldo = saldoPendiente(d);
+    const restante = d.meses - pagadas;
+    const div=document.createElement("div");
+    div.className="list-item";
+    div.innerHTML=`
+      <div><strong>${d.nombre}</strong> — ${pagadas}/${d.meses} pagadas</div>
+      <div style="color:#4a8cff;">Pendiente: $${saldo.toFixed(2)}</div>
+      <div style="font-size:.8rem;color:#9ca3af;">${restante} meses restantes</div>`;
+    cont.appendChild(div);
+  });
+}
+
+// ============================================================
+// INICIALIZAR
+// ============================================================
+renderIngresos();
+renderGastos();
+actualizarDashboard();
+/* ============================================================
+   BLOQUE 3/3 — DEUDAS + ABONOS + SALARIO + RESET + CIERRE
+   ============================================================ */
+
+// ---------- Funciones de Deudas ----------
+function agregarDeuda(){
+  const nombre = document.getElementById("nombreDeuda").value.trim();
+  const monto = parseFloat(document.getElementById("montoDeuda").value);
+  const meses = parseInt(document.getElementById("mesesDeuda").value);
+  if(!nombre || !monto || monto<=0 || !meses || meses<=0){alert("Datos inválidos");return;}
+  const cuota = monto/meses;
+  deudas.push({
+    id:Date.now(),
+    nombre,monto,meses,cuota,
+    fecha:new Date().toISOString().split("T")[0],
+    abonos:[]
+  });
+  localStorage.setItem("deudas",JSON.stringify(deudas));
+  document.getElementById("nombreDeuda").value="";
+  document.getElementById("montoDeuda").value="";
+  document.getElementById("mesesDeuda").value="";
+  renderDeudasDet(); actualizarDashboard();
+}
+
+function mesesPagados(d){
+  const fechaInicio = new Date(d.fecha);
+  const hoy = new Date();
+  let diff = (hoy.getFullYear()-fechaInicio.getFullYear())*12 + (hoy.getMonth()-fechaInicio.getMonth());
+  if(diff<0) diff=0;
+  if(diff>d.meses) diff=d.meses;
+  return diff;
+}
+
+function saldoPendiente(d){
+  const pag = mesesPagados(d);
+  const pagado = pag*d.cuota;
+  const abonos = d.abonos.reduce((s,a)=>s+a.monto,0);
+  return Math.max(d.monto - pagado - abonos,0);
+}
+
+function registrarAbono(id){
+  const monto = parseFloat(prompt("Monto del abono:"));
+  if(!monto || monto<=0){alert("Monto inválido");return;}
+  const deuda = deudas.find(x=>x.id===id);
+  deuda.abonos.push({monto,fecha:new Date().toISOString().split("T")[0]});
+  localStorage.setItem("deudas",JSON.stringify(deudas));
+  renderDeudasDet(); actualizarDashboard();
+}
+
+function renderDeudasDet(){
+  const cont = document.getElementById("listaDeudasDet");
+  cont.innerHTML="";
+  if(deudas.length===0){cont.innerHTML="<div class='list-item'>Sin deudas</div>";return;}
+  deudas.forEach(d=>{
+    const pag = mesesPagados(d);
+    const saldo = saldoPendiente(d);
+    const restante = d.meses - pag;
+    const div=document.createElement("div");
+    div.className="list-item";
+    let hist="";
+    d.abonos.slice().reverse().forEach(a=>{
+      hist += `<div style='font-size:.8rem;color:#9ca3af;'>${a.fecha} → $${a.monto.toFixed(2)}</div>`;
+    });
+    div.innerHTML=`
+      <div><strong>${d.nombre}</strong> — ${pag}/${d.meses} pagadas</div>
+      <div style="color:#4a8cff;">Saldo: $${saldo.toFixed(2)}</div>
+      <div style="font-size:.8rem;color:#9ca3af;">${restante} meses restantes</div>
+      <button class='btn' style='margin-top:8px;' onclick='registrarAbono(${d.id})'>Abonar</button>
+      ${hist?`<div style='margin-top:6px;'>${hist}</div>`:""}
+    `;
+    cont.appendChild(div);
+  });
+}
+
+// ---------- Fecha de pago (día 16 o 15 si domingo) ----------
+function proximoPago(){
+  const hoy = new Date();
+  let pago = new Date(hoy.getFullYear(),hoy.getMonth(),16);
+  if(pago.getDay()===0) pago.setDate(15);
+  return pago.toISOString().split("T")[0];
+}
+
+// ---------- Salario ----------
+function guardarSalario(){
+  const val=parseFloat(document.getElementById("salario").value);
+  if(!val||val<=0){alert("Salario inválido");return;}
+  salarioMensual=val;
+  localStorage.setItem("salarioMensual",JSON.stringify(salarioMensual));
+  alert("Salario guardado.");
+}
+
+// ---------- Reset ----------
+function resetDatos(){
+  if(!confirm("¿Eliminar todos los datos?"))return;
+  ingresos=[];gastos=[];deudas=[];salarioMensual=0;
+  localStorage.clear();
+  renderIngresos();renderGastos();renderDeudasDet();actualizarDashboard();
+  alert("Sistema reiniciado.");
+}
+
+// ---------- Inicialización ----------
+document.addEventListener("DOMContentLoaded",()=>{
+  renderDeudasDet();
+  actualizarDashboard();
+});
+</script>
 </body>
 </html>
