@@ -1,0 +1,1071 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Finanzas SV - Full</title>
+
+<!-- Fuente -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================================================
+   PALETA DE COLORES FINTECH (modo oscuro)
+============================================================ */
+:root {
+    --bg: #0C0A0F;
+    --text: #F4F2FF;
+    --text-light: #B8B4C7;
+    --card: #15121B;
+    --card-light: #1F1A29;
+    --purple: #A259FF;
+    --purple-dark: #6A00FF;
+    --purple-light: #C58CFF;
+    --success: #6BFFCE;
+    --danger: #FF6F91;
+    --warning: #FFD966;
+    --radius: 16px;
+}
+
+/* ============================================================
+   MODO CLARO
+============================================================ */
+.light {
+    --bg: #F8F9FC;
+    --text: #1A1A1A;
+    --text-light: #555;
+    --card: #FFFFFF;
+    --card-light: #F2F2F8;
+    --purple: #6A00FF;
+    --purple-light: #A259FF;
+    --success: #0dd97a;
+    --danger: #ff4f70;
+}
+
+/* ============================================================
+   RESET
+============================================================ */
+* {
+    padding:0;
+    margin:0;
+    box-sizing:border-box;
+    font-family:'Inter', sans-serif;
+    -webkit-tap-highlight-color:transparent;
+}
+body {
+    background: var(--bg);
+    color: var(--text);
+    padding-bottom: 120px;
+}
+.container { max-width: 600px; margin: auto; }
+.view { display: none; }
+.view.active { display: block; }
+
+/* ============================================================
+   HEADER
+============================================================ */
+header {
+    padding:25px 20px 10px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+header h1 {
+    font-size:1.6rem;
+    font-weight:800;
+}
+.back-btn {
+    background:none;
+    border:none;
+    color:var(--purple-light);
+    font-size:1.7rem;
+    cursor:pointer;
+}
+
+/* ============================================================
+   TARJETA SALDO
+============================================================ */
+.main-card {
+    background: linear-gradient(145deg, var(--purple-dark), var(--purple));
+    padding:25px;
+    border-radius:22px;
+    margin:0 20px;
+    box-shadow:0 10px 40px rgba(162,89,255,0.25);
+}
+.main-label { font-size:.9rem; opacity:.9; }
+.main-amount {
+    margin-top:8px;
+    font-size:2.8rem;
+    font-weight:800;
+    letter-spacing:-1px;
+}
+
+/* ============================================================
+   ACCIONES RÁPIDAS
+============================================================ */
+.action-row {
+    display:flex;
+    gap:15px;
+    margin:20px;
+}
+.action-btn {
+    flex:1;
+    background:var(--card-light);
+    padding:18px;
+    border-radius:var(--radius);
+    border:1px solid #272232;
+    text-align:center;
+    transition:.2s;
+    cursor:pointer;
+}
+.action-btn:hover { background:#251d35; }
+.action-btn span {
+    font-size:2rem;
+    display:block;
+}
+.action-btn p {
+    font-size:.8rem;
+    color:var(--text-light);
+}
+
+/* ============================================================
+   LISTAS
+============================================================ */
+.section-title {
+    padding:0 20px;
+    margin-top:25px;
+    margin-bottom:10px;
+    font-weight:700;
+    font-size:1.1rem;
+}
+.card-list {
+    background:var(--card);
+    border-radius:var(--radius);
+    margin:0 20px;
+    border:1px solid #272232;
+    overflow:hidden;
+}
+.list-item {
+    padding:15px;
+    border-bottom:1px solid #272232;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+.list-item:last-child { border:none; }
+
+.item-left h4 { font-size:1rem; }
+.item-left p { font-size:.8rem; color:var(--text-light); }
+
+.amount-ingreso { color:var(--success); }
+.amount-egreso { color:var(--danger); }
+
+/* ============================================================
+   DEUDAS
+============================================================ */
+.deuda-progress {
+    width:100%;
+    background:#2a2237;
+    height:8px;
+    border-radius:10px;
+    margin-top:8px;
+}
+.deuda-bar {
+    height:8px;
+    background:var(--purple);
+    border-radius:10px;
+}
+
+/* ============================================================
+   FAB EXPANDIBLE
+============================================================ */
+.fab-container {
+    position:fixed;
+    bottom:85px;
+    right:25px;
+    z-index:200;
+}
+.fab-main {
+    width:62px;
+    height:62px;
+    border-radius:50%;
+    background:var(--purple);
+    border:none;
+    color:white;
+    font-size:32px;
+    cursor:pointer;
+    box-shadow:0 6px 20px rgba(162,89,255,0.5);
+}
+.fab-group {
+    display:flex;
+    flex-direction:column;
+    align-items:flex-end;
+    gap:12px;
+    margin-bottom:12px;
+    opacity:0;
+    pointer-events:none;
+    transform:translateY(20px);
+    transition:all .25s ease;
+}
+.fab-group.show {
+    opacity:1;
+    pointer-events:auto;
+    transform:translateY(0);
+}
+.fab-small {
+    background:var(--card-light);
+    border:1px solid #272232;
+    padding:10px 15px;
+    color:var(--text);
+    border-radius:12px;
+    cursor:pointer;
+}
+
+/* ============================================================
+   MODALES GENERALES
+============================================================ */
+.modal-overlay {
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    background:rgba(10,0,20,0.7);
+    display:none;
+    justify-content:flex-end;
+    z-index:300;
+}
+.modal-overlay.open { display:flex; }
+
+.modal-box {
+    background:var(--card);
+    width:100%;
+    max-width:600px;
+    border-radius:25px 25px 0 0;
+    padding:25px;
+    max-height:85vh;
+    overflow-y:auto;
+}
+.form-label { font-weight:600; margin-bottom:5px; }
+.form-input {
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    margin-bottom:15px;
+    border:1px solid #272232;
+    background:#0F0B15;
+    color:white;
+}
+.btn-primary {
+    background:var(--purple);
+    padding:16px;
+    border:none;
+    color:white;
+    width:100%;
+    border-radius:14px;
+    font-weight:600;
+}
+.btn-cancel {
+    background:none;
+    border:none;
+    color:var(--text-light);
+    margin-top:12px;
+    width:100%;
+}
+
+/* ============================================================
+   MODAL SALARIO
+============================================================ */
+#modalSalary .salary-modal {
+    background:var(--card);
+    padding:25px;
+    border-radius:18px;
+    max-width:90%;
+    margin:auto;
+    text-align:center;
+    border:1px solid #272232;
+}
+.salary-modal h3 { margin-bottom:10px; }
+.salary-modal input {
+    width:100%;
+    padding:12px;
+    border-radius:12px;
+    border:1px solid #272232;
+    background:#0F0B15;
+    color:white;
+    margin-top:10px;
+}
+.salary-modal button {
+    padding:14px;
+    border-radius:12px;
+    border:none;
+    width:100%;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* ============================================================
+   NOTIFICACIONES (Toast)
+============================================================ */
+.toast {
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%) translateY(40px);
+    background:var(--card-light);
+    padding:15px 20px;
+    border-radius:14px;
+    color:var(--text);
+    opacity:0;
+    pointer-events:none;
+    transition:all .3s ease;
+    border:1px solid #272232;
+}
+.toast.show {
+    transform:translateX(-50%) translateY(0);
+    opacity:1;
+}
+
+/* ============================================================
+   GRÁFICA MENSUAL
+============================================================ */
+#graficaContainer {
+    padding:20px;
+    margin:0 20px;
+    background:var(--card);
+    border-radius:var(--radius);
+    border:1px solid #272232;
+}
+#graficaCanvas {
+    width:100% !important;
+    max-height:380px !important;
+}
+
+</style>
+
+</head>
+<body id="appBody">
+
+<div class="container">
+
+<!-- ============================================================
+   DASHBOARD
+============================================================ -->
+<div id="viewDashboard" class="view active">
+
+    <header>
+        <h1>Finanzas SV</h1>
+        <button onclick="toggleTheme()" class="back-btn">☀️/🌙</button>
+    </header>
+
+    <div class="main-card">
+        <div class="main-label">Saldo Disponible</div>
+        <div id="mainBalance" class="main-amount">$0.00</div>
+    </div>
+
+    <div class="action-row">
+        <div class="action-btn" onclick="openView('viewIngresos')"><span>💰</span><p>Ingresos</p></div>
+        <div class="action-btn" onclick="openView('viewGastos')"><span>💸</span><p>Gastos</p></div>
+        <div class="action-btn" onclick="openView('viewDeudas')"><span>📅</span><p>Deudas</p></div>
+    </div>
+
+    <div class="section-title">Últimos Movimientos</div>
+    <div class="card-list" id="recentList"></div>
+
+    <br>
+    <div class="section-title" onclick="openView('viewGrafica')" style="cursor:pointer;">
+        📊 Ver Gráfica Mensual
+    </div>
+
+</div>
+
+
+<!-- ============================================================
+   INGRESOS
+============================================================ -->
+<div id="viewIngresos" class="view">
+<header>
+    <h1>Ingresos</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+<div class="card-list" id="listaIngresos"></div>
+</div>
+
+
+<!-- ============================================================
+   GASTOS
+============================================================ -->
+<div id="viewGastos" class="view">
+<header>
+    <h1>Gastos</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+<div class="card-list" id="listaGastos"></div>
+</div>
+
+
+<!-- ============================================================
+   GASTOS FIJOS
+============================================================ -->
+<div id="viewFijos" class="view">
+<header>
+    <h1>Gastos Fijos</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+<div class="card-list" id="listaFijos"></div>
+</div>
+
+
+<!-- ============================================================
+   DEUDAS
+============================================================ -->
+<div id="viewDeudas" class="view">
+<header>
+    <h1>Deudas</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+<div class="card-list" id="listaDeudas"></div>
+</div>
+
+
+<!-- ============================================================
+   HISTORIAL
+============================================================ -->
+<div id="viewHistorial" class="view">
+<header>
+    <h1>Historial</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+<div class="card-list" id="listaHistorial"></div>
+</div>
+
+
+<!-- ============================================================
+   GRÁFICA MENSUAL
+============================================================ -->
+<div id="viewGrafica" class="view">
+<header>
+    <h1>Gráfica Mensual</h1>
+    <button class="back-btn" onclick="openView('viewDashboard')">←</button>
+</header>
+
+<div id="graficaContainer">
+    <canvas id="graficaCanvas"></canvas>
+</div>
+
+</div>
+
+
+
+</div> <!-- /container -->
+
+<!-- ============================================================
+   FAB EXPANDIBLE
+============================================================ -->
+<div class="fab-container">
+    <div id="fabGroup" class="fab-group">
+        <div class="fab-small" onclick="openModal('ingreso')">💰 Registrar Ingreso</div>
+        <div class="fab-small" onclick="openModal('gasto')">➕ Registrar Gasto</div>
+        <div class="fab-small" onclick="openModal('fijo')">💳 Gasto Fijo</div>
+        <div class="fab-small" onclick="openModal('deuda')">📅 Nueva Deuda</div>
+    </div>
+    <button class="fab-main" onclick="toggleFAB()">+</button>
+</div>
+
+
+<!-- ============================================================
+   MODAL GENERAL (ingresos, gastos, fijos, deudas)
+============================================================ -->
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <h2 id="modalTitle">Nuevo Registro</h2>
+
+        <label class="form-label">Descripción</label>
+        <input type="text" id="desc" class="form-input">
+
+        <label class="form-label">Monto ($)</label>
+        <input type="number" id="amount" class="form-input">
+
+        <label id="extraLabel" class="form-label" style="display:none;">Meses / Día de pago</label>
+        <input id="extraInput" class="form-input" type="number" style="display:none;">
+
+        <button class="btn-primary" onclick="saveEntry()">Guardar</button>
+        <button class="btn-cancel" onclick="closeModal()">Cancelar</button>
+    </div>
+</div>
+
+
+<!-- ============================================================
+   MODAL DE SALARIO (confirmación editable)
+============================================================ -->
+<div class="modal-overlay" id="modalSalary">
+    <div class="salary-modal">
+        <h3>Confirmar pago de salario</h3>
+        <p id="salaryText"></p>
+
+        <input id="salaryCorrected" type="number" placeholder="Modificar monto (si hubo descuento)">
+
+        <button style="background:var(--purple);" onclick="confirmSalary()">Confirmar</button>
+        <button style="background:#333;color:#999;" onclick="closeSalaryModal()">Cancelar</button>
+    </div>
+</div>
+
+
+<!-- ============================================================
+   NOTIFICACIÓN (toast)
+============================================================ -->
+<div id="toast" class="toast"></div>
+
+<script>
+
+/* ============================================================
+   ESTADO GLOBAL
+============================================================ */
+let data = {
+    balance: 0,
+    ingresos: [],
+    gastos: [],
+    fijos: [],
+    deudas: [],
+    movimientos: [],
+    salariosPagados: {}
+};
+
+let currentType = "gasto";
+let salarioPendiente = null;
+
+/* ============================================================
+   LOCAL STORAGE
+============================================================ */
+function saveData() {
+    localStorage.setItem("finanzasSV_full", JSON.stringify(data));
+}
+function loadData() {
+    let stored = localStorage.getItem("finanzasSV_full");
+    if (stored) data = JSON.parse(stored);
+}
+loadData();
+
+
+/* ============================================================
+   CAMBIO DE VISTA
+============================================================ */
+function openView(id) {
+    document.querySelectorAll(".view").forEach(v => v.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+    renderAll();
+}
+
+
+/* ============================================================
+   MODO OSCURO / CLARO
+============================================================ */
+function toggleTheme() {
+    document.getElementById("appBody").classList.toggle("light");
+    showToast("Modo cambiado");
+}
+
+
+/* ============================================================
+   FAB
+============================================================ */
+function toggleFAB() {
+    document.getElementById("fabGroup").classList.toggle("show");
+}
+
+
+/* ============================================================
+   MODALES
+============================================================ */
+function openModal(type) {
+    currentType = type;
+    document.getElementById("modalOverlay").classList.add("open");
+
+    const title = document.getElementById("modalTitle");
+    const extraLabel = document.getElementById("extraLabel");
+    const extraInput = document.getElementById("extraInput");
+
+    extraLabel.style.display = "none";
+    extraInput.style.display = "none";
+    extraInput.value = "";
+
+    if (type === "ingreso")       title.innerText = "Registrar Ingreso";
+    if (type === "gasto")         title.innerText = "Registrar Gasto";
+    if (type === "fijo") {
+        title.innerText = "Registrar Gasto Fijo";
+        extraLabel.style.display = "block";
+        extraInput.style.display = "block";
+        extraLabel.innerText = "Día de pago (1-30)";
+    }
+    if (type === "deuda") {
+        title.innerText = "Registrar Deuda";
+        extraLabel.style.display = "block";
+        extraInput.style.display = "block";
+        extraLabel.innerText = "Meses a pagar";
+    }
+}
+function closeModal() {
+    document.getElementById("modalOverlay").classList.remove("open");
+}
+
+
+/* ============================================================
+   SALARIO AUTOMÁTICO (TABLA NUEVA)
+============================================================ */
+function calcularSalarioQuincenal() {
+    const bruto = 580;
+    const quincena = bruto / 2;
+
+    const isssMensual = bruto * 0.03;
+    const afpMensual = bruto * 0.0725;
+
+    const isssQ = isssMensual / 2;
+    const afpQ = afpMensual / 2;
+
+    const gravada = quincena - isssQ - afpQ;
+
+    // Tabla nueva 2023–2024 (quincenal)
+    let renta = 0;
+    if (gravada > 700 && gravada <= 1483.33) {
+        renta = ((gravada - 700) * 0.10) + 8.83;
+    } else if (gravada > 1483.33 && gravada <= 3333.33) {
+        renta = ((gravada - 1483.33) * 0.20) + 66.28;
+    } else if (gravada > 3333.33) {
+        renta = ((gravada - 3333.33) * 0.30) + 444.63;
+    }
+
+    return (quincena - isssQ - afpQ - renta).toFixed(2);
+}
+
+
+/* -----------------------------
+   Fechas de pago (ajusta domingo y asueto)
+----------------------------- */
+function esAsueto(fecha) {
+    const f = (fecha.getMonth()+1) + "-" + fecha.getDate();
+    const asuetos = [
+        "1-1","5-1","5-10","6-22","8-6","9-15","11-1","12-25"
+    ];
+    return asuetos.includes(f);
+}
+
+function fechaPago(tipo) {
+    const hoy = new Date();
+    const año = hoy.getFullYear();
+    const mes = hoy.getMonth() + 1;
+
+    let f;
+
+    if (tipo === "q1") {
+        f = new Date(`${año}-${mes}-15`);
+    } else {
+        const ultimo = new Date(año, mes, 0).getDate();
+        f = new Date(`${año}-${mes}-${ultimo}`);
+    }
+
+    // Si cae domingo → pasa a sábado
+    if (f.getDay() === 0) f.setDate(f.getDate() - 1);
+
+    // Si es asueto → día hábil anterior
+    if (esAsueto(f)) f.setDate(f.getDate() - 1);
+
+    return f;
+}
+
+
+/* -----------------------------
+   Revisión automática
+----------------------------- */
+function revisarSalario() {
+    const hoy = new Date();
+    const pago1 = fechaPago("q1");
+    const pago2 = fechaPago("q2");
+
+    const k1 = `${pago1.getFullYear()}-${pago1.getMonth()+1}-Q1`;
+    const k2 = `${pago2.getFullYear()}-${pago2.getMonth()+1}-Q2`;
+
+    if (hoy >= pago1 && !data.salariosPagados[k1]) {
+        salarioPendiente = { llave:k1, fecha:pago1, monto:calcularSalarioQuincenal() };
+        abrirModalSalario();
+        return;
+    }
+    if (hoy >= pago2 && !data.salariosPagados[k2]) {
+        salarioPendiente = { llave:k2, fecha:pago2, monto:calcularSalarioQuincenal() };
+        abrirModalSalario();
+        return;
+    }
+}
+
+
+/* -----------------------------
+   Modal salario
+----------------------------- */
+function abrirModalSalario() {
+    document.getElementById("salaryText").innerText =
+        `Se detectó un pago de salario de $${salarioPendiente.monto}. ¿Deseas confirmarlo?`;
+    document.getElementById("modalSalary").classList.add("open");
+}
+function closeSalaryModal() {
+    document.getElementById("modalSalary").classList.remove("open");
+}
+
+/* -----------------------------
+   Confirmar salario
+----------------------------- */
+function confirmSalary() {
+    let monto = parseFloat(document.getElementById("salaryCorrected").value) || salarioPendiente.monto;
+
+    data.balance += parseFloat(monto);
+    data.ingresos.unshift({
+        desc:"Pago de salario",
+        amount:parseFloat(monto),
+        date:new Date().toLocaleDateString()
+    });
+    data.movimientos.unshift({
+        desc:"Pago de salario",
+        amount:parseFloat(monto),
+        type:"ingreso",
+        date:new Date().toLocaleDateString()
+    });
+
+    data.salariosPagados[salarioPendiente.llave] = true;
+
+    saveData();
+    closeSalaryModal();
+    renderAll();
+    showToast("Salario registrado");
+}
+
+
+/* ============================================================
+   GUARDAR REGISTRO (GASTO / INGRESO / DEUDA / FIJO)
+============================================================ */
+function saveEntry() {
+    const desc = document.getElementById("desc").value;
+    const amount = parseFloat(document.getElementById("amount").value);
+    const extra = parseFloat(document.getElementById("extraInput").value);
+    const fecha = new Date().toLocaleDateString();
+
+    if (!desc || !amount) {
+        showToast("Completa todos los campos");
+        return;
+    }
+
+    if (currentType === "ingreso") {
+        data.balance += amount;
+        data.ingresos.unshift({ desc, amount, date:fecha });
+    }
+
+    if (currentType === "gasto") {
+        data.balance -= amount;
+        data.gastos.unshift({ desc, amount, date:fecha });
+    }
+
+    if (currentType === "fijo") {
+        data.balance -= amount;
+        data.fijos.unshift({ desc, amount, dia:extra, date:fecha });
+    }
+
+    if (currentType === "deuda") {
+        data.balance -= amount;
+        data.deudas.unshift({
+            desc,
+            amount,
+            meses: extra,
+            pagado: 0,
+            date: fecha
+        });
+    }
+
+    data.movimientos.unshift({
+        desc,
+        amount: currentType === "ingreso" ? amount : -amount,
+        type: currentType,
+        date: fecha
+    });
+
+    saveData();
+    closeModal();
+    renderAll();
+    showToast("Guardado");
+}
+
+
+/* ============================================================
+   NOTIFICACIONES (TOAST)
+============================================================ */
+let toastTimer;
+function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.innerText = msg;
+    t.classList.add("show");
+    
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>{
+        t.classList.remove("show");
+    }, 3000);
+}
+
+
+/* ============================================================
+   RENDER GENERAL
+============================================================ */
+function renderAll() {
+    document.getElementById("mainBalance").innerText = "$" + data.balance.toFixed(2);
+
+    renderList("recentList", data.movimientos);
+    renderList("listaIngresos", data.ingresos);
+    renderList("listaGastos", data.gastos);
+    renderList("listaFijos", data.fijos);
+    renderList("listaHistorial", data.movimientos);
+
+    renderDeudas();
+
+    saveData();
+}
+
+
+/* ============================================================
+   RENDER LISTAS
+============================================================ */
+function renderList(id, arr) {
+    const box = document.getElementById(id);
+    box.innerHTML = "";
+
+    arr.forEach(m => {
+        box.innerHTML += `
+            <div class="list-item">
+                <div class="item-left">
+                    <h4>${m.desc}</h4>
+                    <p>${m.date}</p>
+                </div>
+                <div class="item-right ${m.amount > 0 ? "amount-ingreso" : "amount-egreso"}">
+                    ${m.amount > 0 ? "+" : "-"}$${Math.abs(m.amount)}
+                </div>
+            </div>
+        `;
+    });
+}
+
+
+/* ============================================================
+   RENDER DEUDAS
+============================================================ */
+function renderDeudas() {
+    const box = document.getElementById("listaDeudas");
+    box.innerHTML = "";
+
+    data.deudas.forEach(d => {
+        const prog = (d.pagado / d.meses) * 100;
+
+        box.innerHTML += `
+            <div class="list-item">
+                <div class="item-left">
+                    <h4>${d.desc}</h4>
+                    <p>${d.pagado} / ${d.meses} cuotas</p>
+                    <div class="deuda-progress">
+                        <div class="deuda-bar" style="width:${prog}%"></div>
+                    </div>
+                </div>
+                <div class="item-right amount-egreso">-$${d.amount}</div>
+            </div>
+        `;
+    });
+}
+
+
+/* ============================================================
+   INICIO
+============================================================ */
+function iniciar() {
+    renderAll();
+    revisarSalario();
+}
+
+iniciar();
+
+</script>
+<!-- ============================================================
+   LIBRERÍAS NECESARIAS
+============================================================ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+
+
+<script>
+
+/* ============================================================
+   GENERACIÓN DE GRÁFICA MENSUAL (DOBLE BARRA)
+============================================================ */
+let grafica = null;
+
+function cargarGrafica() {
+
+    let ingresosMes = 0;
+    let gastosMes = 0;
+
+    const mesActual = new Date().getMonth() + 1;
+
+    data.ingresos.forEach(i => {
+        const m = parseInt(i.date.split("/")[1]);
+        if (m === mesActual) ingresosMes += Number(i.amount);
+    });
+
+    data.gastos.forEach(g => {
+        const m = parseInt(g.date.split("/")[1]);
+        if (m === mesActual) gastosMes += Number(g.amount);
+    });
+
+    const ctx = document.getElementById("graficaCanvas").getContext("2d");
+
+    if (grafica) grafica.destroy();
+
+    grafica = new Chart(ctx, {
+        type: "bar",
+        data: {
+            labels: ["Ingresos", "Gastos"],
+            datasets: [
+                {
+                    label: "Monto",
+                    data: [ingresosMes, gastosMes],
+                    backgroundColor: [
+                        "rgba(162,89,255,0.7)",
+                        "rgba(255,83,119,0.7)"
+                    ],
+                    borderColor: [
+                        "rgba(162,89,255,1)",
+                        "rgba(255,83,119,1)"
+                    ],
+                    borderWidth: 2,
+                    borderRadius: 8
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: { beginAtZero: true }
+            }
+        }
+    });
+}
+
+document.getElementById("viewGrafica").addEventListener("click", cargarGrafica);
+
+
+/* ============================================================
+   EXPORTAR A EXCEL
+============================================================ */
+function exportExcel() {
+    const wb = XLSX.utils.book_new();
+    const dataArr = [["Fecha", "Descripción", "Tipo", "Monto"]];
+
+    data.movimientos.forEach(m => {
+        dataArr.push([m.date, m.desc, m.type, m.amount]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(dataArr);
+    XLSX.utils.book_append_sheet(wb, ws, "Historial");
+    XLSX.writeFile(wb, "Historial_FinanzasSV.xlsx");
+
+    showToast("Archivo Excel descargado");
+}
+
+
+/* ============================================================
+   EXPORTAR A PDF
+============================================================ */
+async function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF();
+
+    pdf.setFont("Helvetica", "bold");
+    pdf.setFontSize(18);
+    pdf.text("Historial Finanzas SV", 10, 15);
+
+    pdf.setFont("Helvetica", "normal");
+    pdf.setFontSize(12);
+
+    let y = 30;
+    data.movimientos.forEach(m => {
+        pdf.text(`${m.date} - ${m.desc} - ${m.type} - $${m.amount}`, 10, y);
+        y += 7;
+        if (y > 270) {
+            pdf.addPage();
+            y = 20;
+        }
+    });
+
+    pdf.save("Historial_FinanzasSV.pdf");
+    showToast("PDF descargado");
+}
+
+
+/* ============================================================
+   ALERTAS DE VENCIMIENTO (DEUDAS Y FIJOS)
+============================================================ */
+
+function revisarVencimientos() {
+    const hoy = new Date();
+
+    // --- Gastos Fijos ---
+    data.fijos.forEach(f => {
+        if (!f.dia) return;
+
+        const diaActual = hoy.getDate();
+
+        // Si faltan EXACTAMENTE 3 días
+        if (f.dia - diaActual === 3) {
+            showToast(`⚠️ En 3 días vence tu gasto fijo: ${f.desc}`);
+        }
+
+        // Si hoy es el día de pago
+        if (diaActual === f.dia) {
+            showToast(`💳 Hoy vence tu gasto fijo: ${f.desc}`);
+        }
+
+        // Si ya pasó
+        if (diaActual > f.dia) {
+            showToast(`⛔ Te atrasaste en: ${f.desc}`);
+        }
+    });
+
+    // --- Deudas ---
+    data.deudas.forEach(d => {
+        const cuotasRestantes = d.meses - d.pagado;
+
+        if (cuotasRestantes <= 0) return;
+
+        // Fecha simulada de pago mensual (ideal)
+        const proximoMes = new Date();
+        proximoMes.setMonth(proximoMes.getMonth() + d.pagado + 1);
+        proximoMes.setDate(1);
+
+        const diff = Math.floor((proximoMes - hoy) / (1000 * 60 * 60 * 24));
+
+        if (diff === 3) {
+            showToast(`⚠️ En 3 días vence cuota de: ${d.desc}`);
+        }
+
+        if (diff === 0) {
+            showToast(`📅 Hoy vence cuota de: ${d.desc}`);
+        }
+
+        if (diff < 0) {
+            showToast(`⛔ Cuota atrasada de: ${d.desc}`);
+        }
+    });
+}
+
+
+/* ============================================================
+   RENDER Y REVISIÓN GLOBAL
+============================================================ */
+function iniciarParte4() {
+    revisarVencimientos();
+    cargarGrafica();
+}
+
+iniciarParte4();
+
+</script>
