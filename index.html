@@ -51,6 +51,7 @@ label{color:var(--muted);font-size:.9rem;}
  display:flex;flex-direction:column;align-items:center;}
 .bottom-nav button.active{color:var(--blue);} .icon{font-size:1.4rem;}
 .list-item{border-bottom:1px solid #1f2025;padding:8px 0;}
+.summary-home{margin-bottom:10px;font-weight:600;font-size:.9rem;}
 </style>
 </head>
 <body>
@@ -65,8 +66,10 @@ label{color:var(--muted);font-size:.9rem;}
       <div class="stat"><span>Ingresos</span><strong id="ingresosMes">$0.00</strong></div>
       <div class="stat"><span>Gastos</span><strong id="gastosMes">$0.00</strong></div>
     </div>
+
     <div class="card">
       <h2>Deudas Activas</h2>
+      <div id="resumenDeudasHome" class="summary-home"></div>
       <div id="listaDeudasHome"></div>
     </div>
   </section>
@@ -144,7 +147,7 @@ label{color:var(--muted);font-size:.9rem;}
 </div>
 
 <script>
-// ---------------- NAV ----------------
+// Navegación
 function show(id, btn){
  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
  document.getElementById(id).classList.add('active');
@@ -152,27 +155,23 @@ function show(id, btn){
  btn.classList.add('active');
 }
 
-// ---------------- DATA ----------------
+// Datos base
 let ingresos = JSON.parse(localStorage.getItem("ingresos")) || [];
 let gastos = JSON.parse(localStorage.getItem("gastos")) || [];
 let deudas = JSON.parse(localStorage.getItem("deudas")) || [];
 let salarioMensual = JSON.parse(localStorage.getItem("salarioMensual")) || 0;
 
-// ---------------- CHART ----------------
+// Chart
 const ctx = document.getElementById("grafico");
 let grafico = new Chart(ctx,{
-  type:"bar",
-  data:{labels:["Ingresos","Gastos"],datasets:[{data:[0,0],backgroundColor:["#4a8cff","#1e293b"]}]},
-  options:{
-    plugins:{legend:{display:false}},
-    scales:{
-      y:{beginAtZero:true,ticks:{color:"#9ca3af"},grid:{color:"#1e1f24"}},
-      x:{ticks:{color:"#9ca3af"},grid:{color:"#1e1f24"}}
-    }
-  }
+ type:"bar",
+ data:{labels:["Ingresos","Gastos"],datasets:[{data:[0,0],backgroundColor:["#4a8cff","#1e293b"]}]},
+ options:{plugins:{legend:{display:false}},
+  scales:{y:{beginAtZero:true,ticks:{color:"#9ca3af"},grid:{color:"#1e1f24"}},
+          x:{ticks:{color:"#9ca3af"},grid:{color:"#1e1f24"}}}}
 });
 
-// ---------------- INGRESOS ----------------
+// Ingresos
 function agregarIngreso(){
  const monto=parseFloat(document.getElementById("montoIngreso").value);
  const desc=document.getElementById("descIngreso").value.trim();
@@ -191,11 +190,10 @@ function renderIngresos(){
  });
 }
 
-// ---------------- GASTOS ----------------
+// Gastos
 function toggleFechaVencimiento(){
  const tipo=document.getElementById("tipoGasto").value;
- const campo=document.getElementById("campoVencimiento");
- campo.style.display = tipo==="credito" ? "block" : "none";
+ document.getElementById("campoVencimiento").style.display = tipo==="credito"?"block":"none";
 }
 function agregarGasto(){
  const monto=parseFloat(document.getElementById("montoGasto").value);
@@ -221,15 +219,13 @@ function renderGastos(){
  const div=document.getElementById("historialGastos");div.innerHTML="";
  gastos.slice().reverse().forEach(g=>{
   const d=document.createElement("div");d.className="list-item";
-  let extra=g.tipo==="credito"
-   ? ` <span style="color:#4a8cff;">(Tarjeta, vence ${g.fechaVencimiento})</span>`
-   : ` <span style="color:#9ca3af;">(Contado)</span>`;
+  let extra=g.tipo==="credito"?` <span style="color:#4a8cff;">(Tarjeta, vence ${g.fechaVencimiento})</span>`:` <span style="color:#9ca3af;">(Contado)</span>`;
   d.innerHTML=`${g.fecha} — <strong>$${g.monto.toFixed(2)}</strong> ${g.desc}${extra}`;
   div.appendChild(d);
  });
 }
 
-// ---------------- DEUDAS ----------------
+// Deudas
 function agregarDeuda(){
  const nombre=document.getElementById("nombreDeuda").value.trim();
  const monto=parseFloat(document.getElementById("montoDeuda").value);
@@ -262,21 +258,23 @@ function registrarAbono(id){
 function renderDeudas(){
  const cont=document.getElementById("listaDeudasDet"),
        home=document.getElementById("listaDeudasHome"),
-       resumen=document.getElementById("resumenCuotas");
- cont.innerHTML="";home.innerHTML="";resumen.innerHTML="";
+       resumen=document.getElementById("resumenCuotas"),
+       resumenHome=document.getElementById("resumenDeudasHome");
+ cont.innerHTML="";home.innerHTML="";resumen.innerHTML="";resumenHome.innerHTML="";
  if(deudas.length===0){
   cont.innerHTML="<div class='list-item'>Sin deudas</div>";
   home.innerHTML="<div class='list-item'>Sin deudas</div>";
   return;
  }
 
- let totalCuotas=0;
+ let totalCuotas=0,totalSaldo=0;
  deudas.forEach(d=>{
    const pagadas=d.plan.filter(p=>p.pagado).length;
    const totalAbonos=d.abonos.reduce((s,a)=>s+a.monto,0);
    const saldo=Math.max(d.monto - pagadas*d.cuota - totalAbonos,0);
    const prox=d.plan.find(p=>!p.pagado);
    totalCuotas+=d.cuota;
+   totalSaldo+=saldo;
 
    const div=document.createElement("div");
    div.className="list-item";
@@ -296,12 +294,14 @@ function renderDeudas(){
    home.appendChild(d2);
  });
 
- resumen.innerHTML = `<div style="margin-bottom:10px;font-weight:600;">
+ resumen.innerHTML=`<div style="margin-bottom:10px;font-weight:600;">
    Total mensual a pagar: <span style="color:#4a8cff;">$${totalCuotas.toFixed(2)}</span>
  </div>`;
+ resumenHome.innerHTML=`💳 Deudas Totales: <span style="color:#4a8cff;">$${totalSaldo.toFixed(2)}</span><br>
+ 📅 Cuotas Mensuales: <span style="color:#4a8cff;">$${totalCuotas.toFixed(2)}</span>`;
 }
 
-// ---------------- DASHBOARD ----------------
+// Dashboard
 function actualizarDashboard(){
  const ti=ingresos.reduce((s,i)=>s+i.monto,0);
  const tg=gastos.reduce((s,g)=>s+g.monto,0);
@@ -313,7 +313,7 @@ function actualizarDashboard(){
  renderDeudas();
 }
 
-// ---------------- CONFIG ----------------
+// Configuración
 function guardarSalario(){
  const v=parseFloat(document.getElementById("salario").value);
  if(!v||v<=0)return alert("Salario inválido");
@@ -329,7 +329,7 @@ function resetDatos(){
  alert("Sistema reiniciado");
 }
 
-// ---------------- INIT ----------------
+// Init
 document.addEventListener("DOMContentLoaded",()=>{
  renderIngresos();renderGastos();renderDeudas();actualizarDashboard();
 });
